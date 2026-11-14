@@ -59,6 +59,7 @@
                   <span th:if="${!tx.gstEnabled}">Disabled</span>
                   <span th:if="${tx.gstEnabled}" th:text="${tx.gstType}">LOCAL</span>
                 </div>
+                <div th:if="${tx.project}"><small class="text-muted">Project: </small><strong th:text="${tx.project.name}">-</strong></div>
                 <div th:if="${tx.notes}"><small class="text-muted">Notes: </small><em th:text="${tx.notes}">-</em></div>
               </div>
             </div>
@@ -111,13 +112,17 @@
                     <td class="text-muted" th:text="'IGST (' + ${gstPct} + '%)'">IGST</td>
                     <td class="text-end" th:text="'₹ '+${#numbers.formatDecimal(tx.totalIgst,1,'COMMA',2,'POINT')}">-</td>
                   </tr>
+                  <tr th:if="${tx.advanceAmount != null && tx.advanceAmount.compareTo(T(java.math.BigDecimal).ZERO) > 0}">
+                    <td class="text-muted" style="color:#fbbf24;">Advance Deduction</td>
+                    <td class="text-end fw-bold" style="color:#fbbf24;" th:text="'- ₹ '+${#numbers.formatDecimal(tx.advanceAmount,1,'COMMA',2,'POINT')}">-</td>
+                  </tr>
                   <tr style="background:#0F2338;color:#fff;">
                     <td class="fw-bold py-2 px-3">GRAND TOTAL</td>
-                    <td class="text-end fw-bold py-2 px-3" style="color:#C8972A;" th:text="'₹ '+${#numbers.formatDecimal(tx.grandTotal,1,'COMMA',2,'POINT')}">-</td>
+                    <td class="text-end fw-bold py-2 px-3" style="color:#C8972A;" id="tableGrandTotal" th:text="'₹ '+${#numbers.formatDecimal(tx.grandTotal,1,'COMMA',2,'POINT')}">-</td>
                   </tr>
-                  <tr><td class="text-muted">Amount Paid</td><td class="text-end text-success fw-bold" th:text="'₹ '+${#numbers.formatDecimal(tx.amountPaid,1,'COMMA',2,'POINT')}">-</td></tr>
+                  <tr><td class="text-muted">Amount Paid</td><td class="text-end text-success fw-bold" id="tableAmountPaid" th:text="'₹ '+${#numbers.formatDecimal(tx.amountPaid,1,'COMMA',2,'POINT')}">-</td></tr>
                   <tr><td class="text-danger fw-bold">Balance Due</td>
-                    <td class="text-end text-danger fw-bold" th:text="'₹ '+${#numbers.formatDecimal(tx.grandTotal.subtract(tx.amountPaid),1,'COMMA',2,'POINT')}">-</td></tr>
+                    <td class="text-end text-danger fw-bold" id="tableBalanceDue" th:text="'₹ '+${#numbers.formatDecimal(tx.grandTotal.subtract(tx.amountPaid),1,'COMMA',2,'POINT')}">-</td></tr>
                 </table>
               </div>
             </div>
@@ -137,8 +142,8 @@
               <small class="text-muted">No further payments required.</small>
             </div>
             <!-- PENDING: both buttons -->
-            <div th:if="${tx.paymentStatus.name()=='PENDING'}">
-              <p class="text-muted small mb-3">Full amount of <strong th:text="'₹ '+${#numbers.formatDecimal(tx.grandTotal,1,'COMMA',2,'POINT')}">₹0</strong> is pending.</p>
+            <div th:if="${tx.paymentStatus.name()=='PENDING'}" th:with="gross=${tx.subtotal.add(tx.totalCgst).add(tx.totalSgst).add(tx.totalIgst)}">
+              <p class="text-muted small mb-3">Balance of <strong id="pendingMsgBalance" th:text="'₹ '+${#numbers.formatDecimal(gross.subtract(totalReceived),1,'COMMA',2,'POINT')}">₹0</strong> is pending.</p>
               <div class="d-grid gap-2">
                 <button class="btn btn-success fw-bold" onclick="payFull()"><i class="bi bi-check2-all me-2"></i>Mark Fully Paid</button>
                 <button class="btn btn-warning text-dark fw-bold" data-bs-toggle="modal" data-bs-target="#partialModal"><i class="bi bi-cash me-2"></i>Record Partial Payment</button>
@@ -150,11 +155,13 @@
                 <div class="row g-2 text-center">
                   <div class="col-6">
                     <small class="text-muted d-block">Paid So Far</small>
-                    <strong class="text-success" th:text="'₹ '+${#numbers.formatDecimal(tx.amountPaid,1,'COMMA',2,'POINT')}">-</strong>
+                    <strong class="text-success" id="cardPaidSoFar" th:text="'₹ '+${#numbers.formatDecimal(totalReceived,1,'COMMA',2,'POINT')}">-</strong>
                   </div>
                   <div class="col-6">
                     <small class="text-muted d-block">Balance</small>
-                    <strong class="text-danger" th:text="'₹ '+${#numbers.formatDecimal(tx.grandTotal.subtract(tx.amountPaid),1,'COMMA',2,'POINT')}">-</strong>
+                    <strong class="text-danger" id="cardBalance"
+                            th:with="gross=${tx.subtotal.add(tx.totalCgst).add(tx.totalSgst).add(tx.totalIgst)}"
+                            th:text="'₹ '+${#numbers.formatDecimal(gross.subtract(totalReceived),1,'COMMA',2,'POINT')}">-</strong>
                   </div>
                 </div>
               </div>
@@ -214,20 +221,24 @@
   </div></div>
 </div>
 
+<input type="hidden" id="grossTotalVal" th:value="${tx.subtotal.add(tx.totalCgst).add(tx.totalSgst).add(tx.totalIgst)}">
 <th:block th:insert="~{fragments/layout :: scripts}"></th:block>
 <script th:inline="javascript">
 const TX_ID       = /*[[${tx.id}]]*/ 0;
-const GRAND_TOTAL = parseFloat(/*[[${tx.grandTotal}]]*/ 0);
+const GRAND_TOTAL = parseFloat(/*[[${tx.subtotal.add(tx.totalCgst).add(tx.totalSgst).add(tx.totalIgst)}]]*/ 0);
 const PAID_INIT   = parseFloat(/*[[${tx.amountPaid}]]*/ 0);
 const IS_FINAL    = /*[[${tx.status.name()=='FINAL_BILL'}]]*/ false;
 const fmt = n => '₹ '+parseFloat(n).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
 
 document.getElementById('partialModal')?.addEventListener('show.bs.modal', () => {
   loadPaid().then(paid => {
+    const bal = GRAND_TOTAL - paid;
     document.getElementById('mBillTotal').textContent = fmt(GRAND_TOTAL);
     document.getElementById('mPaid').textContent      = fmt(paid);
-    document.getElementById('mBalance').textContent   = fmt(GRAND_TOTAL - paid);
-    document.getElementById('partialAmt').max         = GRAND_TOTAL - paid;
+    document.getElementById('mBalance').textContent   = fmt(bal);
+    document.getElementById('partialAmt').max         = bal;
+    document.getElementById('partialAmt').value       = bal.toFixed(2);
+    calcRem();
   });
 });
 
@@ -249,7 +260,8 @@ async function loadPaid() {
   try {
     const r = await fetch('/admin/payments/transactions/'+TX_ID+'/history');
     const d = await r.json();
-    return d.reduce((s,i) => s+parseFloat(i.amount), 0);
+    // Include all payments (including advance) because GRAND_TOTAL is now gross
+    return d.reduce((s,i) => s + parseFloat(i.amount), 0);
   } catch { return PAID_INIT; }
 }
 
@@ -278,11 +290,32 @@ function loadHistory(){
     .then(r=>r.json()).then(items=>{
       const el = document.getElementById('payHistoryList');
       if(!items||!items.length){el.innerHTML='<div class="text-center text-muted py-3 small">No payments yet.</div>';return;}
+      
+      // Update UI totals based on actual history
+      const total = items.reduce((s,i)=>s+parseFloat(i.amount), 0);
+      const gross = parseFloat(document.getElementById('grossTotalVal').value);
+      const bal   = gross - total;
+      
+      const psf = document.getElementById('cardPaidSoFar');
+      if(psf) psf.innerText = fmt(total);
+      const cb = document.getElementById('cardBalance');
+      if(cb) cb.innerText = fmt(bal);
+      const pmb = document.getElementById('pendingMsgBalance');
+      if(pmb) pmb.innerText = fmt(bal);
+      
+      // Update Invoice Table
+      const tgt = document.getElementById('tableGrandTotal');
+      if(tgt) tgt.innerText = fmt(gross);
+      const tap = document.getElementById('tableAmountPaid');
+      if(tap) tap.innerText = fmt(total);
+      const tbd = document.getElementById('tableBalanceDue');
+      if(tbd) tbd.innerText = fmt(bal);
+
       el.innerHTML = items.map(i=>`
         <div class="list-group-item px-3 py-2">
           <div class="d-flex justify-content-between align-items-start">
             <div>
-              <span class="badge ${i.title.toLowerCase().includes('full')?'badge-success':'badge-warn'} me-2">${i.title}</span>
+              <span class="badge ${i.title.toLowerCase().includes('full')?'bg-success':'bg-warning text-dark'} me-2">${i.title}</span>
               <small class="text-muted">${i.date}</small>
             </div>
             <strong class="text-success">${fmt(i.amount)}</strong>

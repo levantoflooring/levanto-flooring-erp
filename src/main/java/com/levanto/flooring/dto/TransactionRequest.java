@@ -17,7 +17,12 @@ public class TransactionRequest {
     private boolean taxAllItems = false;
     private String  gstType     = "LOCAL"; // LOCAL, IGST
 
+    private Long projectId;
+    private Long advanceId;
+
     private String notes;
+    private String customTerms;
+    private boolean showCustomTerms;
 
     @NotEmpty(message = "At least one line item is required")
     @Valid

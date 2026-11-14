@@ -21,6 +21,7 @@ import java.time.format.DateTimeFormatter;
 public class PdfService {
 
     private final CompanyProperties co;
+    private final com.levanto.flooring.service.PaymentService paymentService;
 
     // Colours
     private static final BaseColor NAVY = new BaseColor(15, 35, 56);
@@ -58,7 +59,7 @@ public class PdfService {
             totals(doc, tx);
             if (tx.getNotes() != null && !tx.getNotes().isBlank())
                 notes(doc, tx.getNotes());
-            terms(doc);
+            terms(doc, tx);
 
             if (tx.getStatus() == TransactionStatus.QUOTATION)
                 watermark(writer);
@@ -265,27 +266,48 @@ public class PdfService {
         div.setFixedHeight(2);
         t.addCell(div);
 
+        // Calculate True Gross Total dynamically
+        BigDecimal grossTotal = tx.getSubtotal()
+            .add(tx.getTotalCgst())
+            .add(tx.getTotalSgst())
+            .add(tx.getTotalIgst());
+
         // Grand total
         PdfPCell gl = new PdfPCell(new Phrase("GRAND TOTAL", f(11, Font.BOLD, BaseColor.WHITE)));
         gl.setBackgroundColor(NAVY);
         gl.setPadding(10);
         gl.setBorder(Rectangle.NO_BORDER);
         t.addCell(gl);
-        PdfPCell gv = new PdfPCell(new Phrase("₹ " + fmt(tx.getGrandTotal()), f(11, Font.BOLD, BaseColor.WHITE)));
+        PdfPCell gv = new PdfPCell(new Phrase("₹ " + fmt(grossTotal), f(11, Font.BOLD, BaseColor.WHITE)));
         gv.setBackgroundColor(GOLD);
         gv.setPadding(10);
         gv.setBorder(Rectangle.NO_BORDER);
         gv.setHorizontalAlignment(Element.ALIGN_RIGHT);
         t.addCell(gv);
 
-        // Amount paid
-        totalRow(t, "Amount Paid", "₹ " + fmt(tx.getAmountPaid()), false);
-        BigDecimal balance = tx.getGrandTotal().subtract(tx.getAmountPaid());
+        // Advance
+        BigDecimal advanceAmt = tx.getAdvanceAmount() != null ? tx.getAdvanceAmount() : BigDecimal.ZERO;
+        if (advanceAmt.compareTo(BigDecimal.ZERO) > 0) {
+            totalRow(t, "Advance Adjusted", "- ₹ " + fmt(advanceAmt), false);
+        }
+        
+        // Fetch True Cumulative Total (includes advance)
+        BigDecimal trueTotalPaid = paymentService.totalReceivedForTransaction(tx.getId());
+        
+        // Amount Paid (Excluding Advance)
+        BigDecimal amountPaidExcludingAdvance = trueTotalPaid.subtract(advanceAmt);
+        if (amountPaidExcludingAdvance.compareTo(BigDecimal.ZERO) < 0) amountPaidExcludingAdvance = BigDecimal.ZERO;
+        totalRow(t, "Amount Paid", "₹ " + fmt(amountPaidExcludingAdvance), false);
+        
+        // Balance Due
+        BigDecimal balance = grossTotal.subtract(advanceAmt).subtract(amountPaidExcludingAdvance);
+        if (balance.compareTo(BigDecimal.ZERO) < 0) balance = BigDecimal.ZERO;
+        
         totalRow(t, "Balance Due", "₹ " + fmt(balance), true);
 
         doc.add(t);
 
-        Paragraph words = p("Amount in words: " + inWords(tx.getGrandTotal()) + " Only",
+        Paragraph words = p("Amount in words: " + inWords(grossTotal) + " Only",
                 f(8, Font.NORMAL, MUTED));
         words.setAlignment(Element.ALIGN_RIGHT);
         doc.add(words);
@@ -309,11 +331,16 @@ public class PdfService {
         doc.add(Chunk.NEWLINE);
     }
 
-    private void terms(Document doc) throws DocumentException {
-        doc.add(p("Terms & Conditions:", f(8, Font.BOLD, MUTED)));
-        doc.add(p("• Goods once sold will not be taken back or exchanged.\n" +
-                "• This is a computer-generated document, valid without signature.\n" +
-                "• Subject to local jurisdiction only.", f(7, Font.NORMAL, MUTED)));
+    private void terms(Document doc, Transaction tx) throws DocumentException {
+        if (tx.isShowCustomTerms() && tx.getCustomTerms() != null && !tx.getCustomTerms().isBlank()) {
+            doc.add(p("Terms & Conditions:", f(8, Font.BOLD, GOLD)));
+            doc.add(p(tx.getCustomTerms(), f(7, Font.NORMAL, DARK)));
+        } else {
+            doc.add(p("Terms & Conditions:", f(8, Font.BOLD, MUTED)));
+            doc.add(p("• Goods once sold will not be taken back or exchanged.\n" +
+                    "• This is a computer-generated document, valid without signature.\n" +
+                    "• Subject to local jurisdiction only.", f(7, Font.NORMAL, MUTED)));
+        }
     }
 
     private void watermark(PdfWriter w) {

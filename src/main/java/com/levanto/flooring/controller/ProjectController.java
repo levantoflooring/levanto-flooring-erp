@@ -7,6 +7,7 @@ import com.levanto.flooring.repository.AppUserRepository;
 import com.levanto.flooring.service.*;
 import lombok.RequiredArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,44 @@ public class ProjectController {
     private final AppUserRepository    userRepo;
     private final com.levanto.flooring.repository.EmployeeRepository employeeRepo;
     private final LabourWagePdfService labourPdfService;
+    private final AdvancePaymentService advanceService;
+    private final com.levanto.flooring.repository.TransactionRepository txRepo;
+    private final com.levanto.flooring.repository.IncomeTransactionRepository incomeRepo;
+    private final PaymentService paymentService;
+    private final ProjectIncomePdfService projectIncomePdfService;
+
+    @GetMapping("/{id}/income-report/pdf")
+    public ResponseEntity<byte[]> incomeReportPdf(@PathVariable Long id) {
+        Project p = projectService.getById(id);
+        List<Transaction> bills = txRepo.findByProject_IdOrderByCreatedAtDesc(id);
+        List<AdvancePayment> allAdvances = advanceService.getByProject(id);
+        
+        java.util.Map<Long, AdvancePayment> settledAdvancesMap = allAdvances.stream()
+                .filter(a -> a.getStatus() == AdvancePaymentStatus.SETTLED && a.getSettledBill() != null)
+                .collect(java.util.stream.Collectors.toMap(a -> a.getSettledBill().getId(), a -> a, (a1, a2) -> a1));
+
+        List<AdvancePayment> unsettledAdvances = allAdvances.stream()
+                .filter(a -> a.getStatus() == AdvancePaymentStatus.RECEIVED)
+                .toList();
+
+        List<IncomeTransaction> allIncomes = incomeRepo.findAllByProjectId(id);
+        java.util.Map<Long, BigDecimal> billTotalsMap = new java.util.HashMap<>();
+        for (IncomeTransaction inc : allIncomes) {
+            Long txId = (inc.getTransaction() != null) ? inc.getTransaction().getId() : 
+                        (inc.getAdvancePayment() != null && inc.getAdvancePayment().getSettledBill() != null) ? 
+                        inc.getAdvancePayment().getSettledBill().getId() : null;
+            if (txId != null) billTotalsMap.put(txId, billTotalsMap.getOrDefault(txId, BigDecimal.ZERO).add(inc.getAmount()));
+        }
+
+        byte[] pdf = projectIncomePdfService.generate(p, bills, unsettledAdvances, settledAdvancesMap, billTotalsMap);
+        
+        org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+        headers.setContentType(org.springframework.http.MediaType.APPLICATION_PDF);
+        headers.set(org.springframework.http.HttpHeaders.CONTENT_DISPOSITION, 
+                    "attachment; filename=\"IncomeReport_" + p.getName().replaceAll("\\s+", "_") + ".pdf\"");
+        
+        return ResponseEntity.ok().headers(headers).body(pdf);
+    }
 
     // ── Project list ─────────────────────────────────────────────────────────
     @GetMapping
@@ -52,7 +91,56 @@ public class ProjectController {
         m.addAttribute("netProfit",       projectService.netProfitability(id));
         m.addAttribute("JobCardStatus",   JobCardStatus.values());
         m.addAttribute("ProjectStatus",   ProjectStatus.values());
+        m.addAttribute("advances",        advanceService.getByProject(id));
+        m.addAttribute("newAdvance",      new AdvancePayment());
+        m.addAttribute("bills",           txRepo.findByProject_IdOrderByCreatedAtDesc(id));
         return "project/detail";
+    }
+
+    @GetMapping("/{id}/income-report")
+    public String incomeReport(@PathVariable Long id, Model m) {
+        Project p = projectService.getById(id);
+        
+        // Fetch all bills for the project
+        List<Transaction> bills = txRepo.findByProject_IdOrderByCreatedAtDesc(id);
+        
+        // Fetch all advances for the project
+        List<AdvancePayment> allAdvances = advanceService.getByProject(id);
+        
+        // Map settled advances for easy access in template
+        java.util.Map<Long, AdvancePayment> settledAdvancesMap = allAdvances.stream()
+                .filter(a -> a.getStatus() == AdvancePaymentStatus.SETTLED && a.getSettledBill() != null)
+                .collect(java.util.stream.Collectors.toMap(a -> a.getSettledBill().getId(), a -> a, (a1, a2) -> a1));
+
+        // Filter unsettled advances
+        List<AdvancePayment> unsettledAdvances = allAdvances.stream()
+                .filter(a -> a.getStatus() == AdvancePaymentStatus.RECEIVED)
+                .toList();
+
+        // Optimization: Fetch all income transactions for this project at once
+        List<IncomeTransaction> allIncomes = incomeRepo.findAllByProjectId(id);
+        
+        // Pre-calculate total received per bill to avoid N+1 queries in template
+        java.util.Map<Long, BigDecimal> billTotalsMap = new java.util.HashMap<>();
+        for (IncomeTransaction inc : allIncomes) {
+            Long txId = null;
+            if (inc.getTransaction() != null) txId = inc.getTransaction().getId();
+            else if (inc.getAdvancePayment() != null && inc.getAdvancePayment().getSettledBill() != null) {
+                txId = inc.getAdvancePayment().getSettledBill().getId();
+            }
+            
+            if (txId != null) {
+                billTotalsMap.put(txId, billTotalsMap.getOrDefault(txId, BigDecimal.ZERO).add(inc.getAmount()));
+            }
+        }
+
+        m.addAttribute("project", p);
+        m.addAttribute("bills", bills);
+        m.addAttribute("settledAdvancesMap", settledAdvancesMap);
+        m.addAttribute("unsettledAdvances", unsettledAdvances);
+        m.addAttribute("billTotalsMap", billTotalsMap);
+        
+        return "project/income-report";
     }
 
     // ── New / Edit form ───────────────────────────────────────────────────────

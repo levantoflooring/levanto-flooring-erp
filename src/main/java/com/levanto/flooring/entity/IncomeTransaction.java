@@ -21,13 +21,18 @@ public class IncomeTransaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // ── Link to the parent invoice/bill ─────────────────────────────────────
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "transaction_id", nullable = false)
+    // ── Link to the parent invoice/bill (optional if it's an advance) ─────────
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "transaction_id", nullable = true)
     private Transaction transaction;
 
-    /** Mirrors Transaction.invoiceNumber for quick lookup / reporting */
-    @Column(nullable = false, length = 50)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "advance_payment_id")
+    private AdvancePayment advancePayment;
+
+    /** Mirrors Transaction.invoiceNumber or AdvancePayment.receiptNumber */
+    @Column(nullable = true, length = 50)
     private String inventoryNumber;
 
     /** Human-readable title, e.g. "Full Payment", "Advance", "2nd Instalment" */

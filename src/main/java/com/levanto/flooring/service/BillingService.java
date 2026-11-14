@@ -26,6 +26,8 @@ public class BillingService {
     private final InventoryItemRepository itemRepo;
     private final NumberGenerator       numGen;
     private final CompanyProperties     company;
+    private final ProjectRepository     projectRepo;
+    private final AdvancePaymentRepository advanceRepo;
 
     // ── Create Quotation (no stock deduction) ─────────────────────────────────
     @Transactional
@@ -42,7 +44,28 @@ public class BillingService {
         tx.setInvoiceNumber(numGen.nextInvoiceNumber());
         tx.setConvertedAt(LocalDateTime.now());
         deductStock(tx.getItems());
-        return txRepo.save(tx);
+        Transaction saved = txRepo.saveAndFlush(tx);
+        
+        // Finalize advance settlement if any
+        if (req.getAdvanceId() != null) {
+            advanceRepo.findById(req.getAdvanceId()).ifPresent(ap -> {
+                ap.setStatus(AdvancePaymentStatus.SETTLED);
+                ap.setSettledBill(saved);
+                
+                // If advance covers full amount, mark as PAID
+                if (saved.getGrandTotal().compareTo(ap.getAmount()) <= 0) {
+                    saved.setPaymentStatus(com.levanto.flooring.enums.PaymentStatus.PAID);
+                    saved.setAmountPaid(saved.getGrandTotal());
+                } else {
+                    saved.setPaymentStatus(com.levanto.flooring.enums.PaymentStatus.PARTIALLY_PAID);
+                    saved.setAmountPaid(ap.getAmount());
+                }
+                
+                advanceRepo.save(ap);
+                txRepo.save(saved);
+            });
+        }
+        return saved;
     }
 
     // ── Convert Quotation → Final Bill (stock deducted only here) ────────────
@@ -69,9 +92,14 @@ public class BillingService {
     }
 
     // ── Read ──────────────────────────────────────────────────────────────────
+    @Transactional(readOnly = true)
     public Transaction getById(Long id) {
-        return txRepo.findById(id)
+        Transaction tx = txRepo.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Transaction not found: " + id));
+        org.hibernate.Hibernate.initialize(tx.getCustomer());
+        org.hibernate.Hibernate.initialize(tx.getProject());
+        org.hibernate.Hibernate.initialize(tx.getItems());
+        return tx;
     }
 
     public Page<Transaction> getAll(int page, int size, TransactionStatus status, String search) {
@@ -114,9 +142,25 @@ public class BillingService {
             .taxAllItems(req.isTaxAllItems())
             .gstType(GstType.valueOf(req.getGstType() != null ? req.getGstType() : "LOCAL"))
             .notes(req.getNotes())
+            .customTerms(req.getCustomTerms())
+            .showCustomTerms(req.isShowCustomTerms())
             .createdBy(createdBy)
             .items(new ArrayList<>())
             .build();
+
+        // Map project if provided
+        if (req.getProjectId() != null) {
+            projectRepo.findById(req.getProjectId()).ifPresent(tx::setProject);
+        }
+
+        // Handle advance payment
+        if (req.getAdvanceId() != null) {
+            advanceRepo.findById(req.getAdvanceId()).ifPresent(ap -> {
+                if (ap.getStatus() == AdvancePaymentStatus.RECEIVED) {
+                    tx.setAdvanceAmount(ap.getAmount());
+                }
+            });
+        }
 
         BigDecimal subtotal   = BigDecimal.ZERO;
         BigDecimal totalCgst  = BigDecimal.ZERO;
@@ -204,7 +248,8 @@ public class BillingService {
         tx.setTotalCgst(totalCgst);
         tx.setTotalSgst(totalSgst);
         tx.setTotalIgst(totalIgst);
-        tx.setGrandTotal(subtotal.add(totalCgst).add(totalSgst).add(totalIgst));
+        BigDecimal grandTotal = subtotal.add(totalCgst).add(totalSgst).add(totalIgst);
+        tx.setGrandTotal(grandTotal);
         tx.setAmountPaid(BigDecimal.ZERO);
         tx.setPaymentStatus(PaymentStatus.PENDING);
 

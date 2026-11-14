@@ -29,6 +29,20 @@ public class DailyLogService {
     // ── Save daily log + auto-create Labour ProjectExpense ────────────────────
     @Transactional
     public DailyLog saveLog(DailyLog dailyLog, AppUser submittedBy) {
+        // Ensure JobCard is attached to the current session and project is initialized
+        if (dailyLog.getJobCard() != null) {
+            JobCard jc = jobCardRepo.findById(dailyLog.getJobCard().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Job card not found: " + dailyLog.getJobCard().getId()));
+            dailyLog.setJobCard(jc);
+        }
+
+        // Link labour logs back to this daily log and ensure they are attached
+        if (dailyLog.getLabourLogs() != null) {
+            for (DailyLabourLog ll : dailyLog.getLabourLogs()) {
+                ll.setDailyLog(dailyLog);
+            }
+        }
+
         // Compute labour cost from itemized logs (or fallback to old summary method)
         BigDecimal labour = BigDecimal.ZERO;
         if (dailyLog.getLabourLogs() != null && !dailyLog.getLabourLogs().isEmpty()) {

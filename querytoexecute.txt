@@ -1,0 +1,3 @@
+ALTER TABLE LEVANTO.advance_payments MODIFY project_id NULL;
+ALTER TABLE LEVANTO.transactions ADD (custom_terms VARCHAR2(2000));
+ALTER TABLE LEVANTO.transactions ADD (show_custom_terms NUMBER(1) DEFAULT 0);

@@ -23,16 +23,25 @@ public class Transaction {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Builder.Default
     private TransactionStatus status = TransactionStatus.QUOTATION;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Builder.Default
     private PaymentStatus paymentStatus = PaymentStatus.PENDING;
 
+    @com.fasterxml.jackson.annotation.JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
+    private Project project;
+
+    @com.fasterxml.jackson.annotation.JsonIgnore
     @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<TransactionItem> items = new ArrayList<>();
@@ -40,10 +49,12 @@ public class Transaction {
     // ── GST Toggles ────────────────────────────────────
     /** If false → GST is 0 for ALL items */
     @Column(nullable = false)
+    @Builder.Default
     private boolean gstEnabled = true;
 
     /** If true → GST applied to Products AND Services. If false → GST only on Services */
     @Column(nullable = false)
+    @Builder.Default
     private boolean taxAllItems = false;
 
     @Enumerated(EnumType.STRING)
@@ -52,16 +63,23 @@ public class Transaction {
     private com.levanto.flooring.enums.GstType gstType = com.levanto.flooring.enums.GstType.LOCAL;
 
     // ── Financials (stored for archival accuracy) ───────
-    @Column(precision = 14, scale = 2) private BigDecimal subtotal    = BigDecimal.ZERO;
-    @Column(precision = 14, scale = 2) private BigDecimal totalCgst   = BigDecimal.ZERO;
-    @Column(precision = 14, scale = 2) private BigDecimal totalSgst   = BigDecimal.ZERO;
-    @Column(precision = 14, scale = 2) private BigDecimal totalIgst   = BigDecimal.ZERO;
-    @Column(precision = 14, scale = 2) private BigDecimal grandTotal  = BigDecimal.ZERO;
+    @Column(precision = 14, scale = 2) @Builder.Default private BigDecimal subtotal    = BigDecimal.ZERO;
+    @Column(precision = 14, scale = 2) @Builder.Default private BigDecimal totalCgst   = BigDecimal.ZERO;
+    @Column(precision = 14, scale = 2) @Builder.Default private BigDecimal totalSgst   = BigDecimal.ZERO;
+    @Column(precision = 14, scale = 2) @Builder.Default private BigDecimal totalIgst   = BigDecimal.ZERO;
+    @Column(precision = 14, scale = 2) @Builder.Default private BigDecimal grandTotal  = BigDecimal.ZERO;
 
-    @Column(precision = 14, scale = 2) private BigDecimal amountPaid  = BigDecimal.ZERO;
+    @Column(precision = 14, scale = 2) @Builder.Default private BigDecimal amountPaid  = BigDecimal.ZERO;
+    @Column(precision = 14, scale = 2) @Builder.Default private BigDecimal advanceAmount = BigDecimal.ZERO;
 
     @Column
     private String notes;
+
+    @Column(length = 2000)
+    private String customTerms;
+
+    @Builder.Default
+    private boolean showCustomTerms = false;
 
     // ── Audit ────────────────────────────────────────────
     @Column(updatable = false)

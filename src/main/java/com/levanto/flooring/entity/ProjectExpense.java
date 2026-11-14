@@ -33,10 +33,14 @@ public class ProjectExpense {
     // ── Project + Job Card (denormalised for easy querying) ───────────────────
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id", nullable = false)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Project project;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_card_id", nullable = false)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private JobCard jobCard;
 
     @Enumerated(EnumType.STRING)
@@ -70,14 +74,20 @@ public class ProjectExpense {
     /** Set when status → APPROVED; points to the company ledger record created */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_expense_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Expense companyExpense;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "submitted_by_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private AppUser submittedBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "approved_by_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private AppUser approvedBy;
 
     private LocalDateTime approvedAt;

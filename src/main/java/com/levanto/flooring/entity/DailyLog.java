@@ -7,8 +7,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.LinkedHashSet;
 
 @Entity
 @Table(name = "daily_logs")
@@ -20,6 +20,8 @@ public class DailyLog {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_card_id", nullable = false)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private JobCard jobCard;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -48,6 +50,8 @@ public class DailyLog {
     // ── Logged by ─────────────────────────────────────────────────────
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "logged_by_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private AppUser loggedBy;
 
     @Column(updatable = false)

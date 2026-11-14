@@ -38,4 +38,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     @Query("SELECT MAX(t.invoiceNumber) FROM Transaction t WHERE t.invoiceNumber LIKE CONCAT(:prefix, '%')")
     String findMaxInvoiceNumber(@Param("prefix") String prefix);
+
+    @EntityGraph(attributePaths = {"customer"})
+    java.util.List<Transaction> findByProject_IdOrderByCreatedAtDesc(Long projectId);
 }

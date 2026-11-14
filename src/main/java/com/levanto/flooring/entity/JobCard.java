@@ -21,6 +21,8 @@ public class JobCard {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id", nullable = false)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Project project;
 
     @NotBlank
@@ -33,6 +35,8 @@ public class JobCard {
     // Assigned site engineer (Employee)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assigned_employee_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Employee assignedEngineer;
 
     @Enumerated(EnumType.STRING)
@@ -47,6 +51,8 @@ public class JobCard {
 
     @OneToMany(mappedBy = "jobCard", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<DailyLog> dailyLogs = new ArrayList<>();
 
     @PrePersist void onCreate() { createdAt = LocalDateTime.now(); }

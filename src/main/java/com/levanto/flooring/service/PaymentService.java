@@ -24,6 +24,7 @@ public class PaymentService {
 
     private final TransactionRepository       txRepo;
     private final IncomeTransactionRepository incomeRepo;
+    private final com.levanto.flooring.repository.AdvancePaymentRepository advanceRepo;
 
     // ── Mark Fully Paid ───────────────────────────────────────────────────────
     /**
@@ -35,14 +36,12 @@ public class PaymentService {
         Transaction tx = getInvoice(transactionId);
         assertNotFullyPaid(tx);
 
-        BigDecimal alreadyPaid = incomeRepo.sumByTransactionId(transactionId);
-        BigDecimal remaining   = tx.getGrandTotal().subtract(alreadyPaid).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal alreadyPaid = totalReceivedForTransaction(transactionId);
+        BigDecimal gross       = tx.getSubtotal().add(tx.getTotalCgst()).add(tx.getTotalSgst()).add(tx.getTotalIgst());
+        BigDecimal remaining   = gross.subtract(alreadyPaid).setScale(2, RoundingMode.HALF_UP);
 
-        if (remaining.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalStateException("Invoice is already fully settled.");
-        }
-
-        IncomeTransaction income = buildIncome(tx, "Full Payment", remaining, alreadyPaid.add(remaining), tx.getGrandTotal());
+        String title = (remaining.compareTo(BigDecimal.ZERO) == 0) ? "Full Payment" : "Final Settlement";
+        IncomeTransaction income = buildIncome(tx, title, remaining, alreadyPaid.add(remaining), gross);
 
         tx.setAmountPaid(tx.getGrandTotal());
         tx.setPaymentStatus(PaymentStatus.PAID);
@@ -65,22 +64,22 @@ public class PaymentService {
             throw new IllegalArgumentException("Payment amount must be positive.");
         }
 
-        BigDecimal alreadyPaid = incomeRepo.sumByTransactionId(transactionId);
+        BigDecimal alreadyPaid = totalReceivedForTransaction(transactionId);
         BigDecimal newTotal    = alreadyPaid.add(payAmount).setScale(2, RoundingMode.HALF_UP);
-        BigDecimal grandTotal  = tx.getGrandTotal();
+        BigDecimal gross       = tx.getSubtotal().add(tx.getTotalCgst()).add(tx.getTotalSgst()).add(tx.getTotalIgst());
 
-        if (newTotal.compareTo(grandTotal) > 0) {
+        if (newTotal.compareTo(gross) > 0) {
             throw new IllegalArgumentException(
                 "Payment of ₹" + payAmount + " exceeds remaining balance of ₹" +
-                grandTotal.subtract(alreadyPaid).setScale(2, RoundingMode.HALF_UP)
+                gross.subtract(alreadyPaid).setScale(2, RoundingMode.HALF_UP)
             );
         }
 
         String effectiveTitle = (title != null && !title.isBlank()) ? title : "Partial Payment";
-        IncomeTransaction income = buildIncome(tx, effectiveTitle, payAmount, newTotal, grandTotal);
+        IncomeTransaction income = buildIncome(tx, effectiveTitle, payAmount, newTotal, gross);
 
         // Auto-transition if balance is now zero
-        if (newTotal.compareTo(grandTotal) == 0) {
+        if (newTotal.compareTo(gross) >= 0) {
             tx.setPaymentStatus(PaymentStatus.PAID);
             log.info("Auto-transitioned Invoice {} to FULLY_PAID", tx.getInvoiceNumber());
         } else {
@@ -96,17 +95,19 @@ public class PaymentService {
     public List<IncomeTransaction> getPaymentsForTransaction(Long transactionId) {
         Transaction tx = txRepo.findById(transactionId)
             .orElseThrow(() -> new IllegalArgumentException("Transaction not found: " + transactionId));
-        return incomeRepo.findByTransactionOrderByDateDesc(tx);
+        return incomeRepo.findAllByTransactionOrSettledAdvance(tx.getId());
     }
 
     public BigDecimal totalReceivedForTransaction(Long transactionId) {
-        return incomeRepo.sumByTransactionId(transactionId);
+        return getPaymentsForTransaction(transactionId).stream()
+                .map(IncomeTransaction::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public Page<IncomeTransaction> getLedger(int page, int size, LocalDate from, LocalDate to) {
-        Pageable pg = PageRequest.of(page, size, Sort.by("date").descending());
+        Pageable pg = PageRequest.of(page, size, Sort.by("id").descending());
         if (from != null && to != null) return incomeRepo.findByDateRange(from, to, pg);
-        return incomeRepo.findAllByOrderByDateDesc(pg);
+        return incomeRepo.findAllByOrderByIdDesc(pg);
     }
 
     public BigDecimal monthlyIncome(LocalDate from, LocalDate to) {
@@ -135,19 +136,31 @@ public class PaymentService {
         BigDecimal pending = grandTotal.subtract(totalReceived).setScale(2, RoundingMode.HALF_UP);
         if (pending.compareTo(BigDecimal.ZERO) < 0) pending = BigDecimal.ZERO;
 
-        String description = String.format(
+        StringBuilder descBuilder = new StringBuilder(String.format(
             "Bill Amount: ₹%s, Total Received: ₹%s, Pending Amount: ₹%s",
             grandTotal.setScale(2, RoundingMode.HALF_UP),
             totalReceived.setScale(2, RoundingMode.HALF_UP),
             pending
-        );
+        ));
+
+        advanceRepo.findBySettledBillId(tx.getId()).ifPresent(ap -> {
+            descBuilder.append(String.format(" (Advance Adjusted: %s - ₹%s)", 
+                ap.getReceiptNumber(), 
+                ap.getAmount().setScale(2, RoundingMode.HALF_UP)));
+        });
+
+        if (tx.getProject() != null) {
+            descBuilder.append(" | Project: ").append(tx.getProject().getName());
+        }
+
+        String finalDescription = descBuilder.toString();
 
         return IncomeTransaction.builder()
             .transaction(tx)
             .inventoryNumber(tx.getInvoiceNumber())
             .title(title)
             .amount(amount.setScale(2, RoundingMode.HALF_UP))
-            .description(description)
+            .description(finalDescription)
             .date(LocalDate.now())
             .build();
     }

@@ -24,6 +24,9 @@ public class BillingController {
     private final InventoryService  inventoryService;
     private final PdfService        pdfService;
     private final AppUserRepository userRepo;
+    private final ProjectService    projectService;
+    private final AdvancePaymentService advanceService;
+    private final PaymentService    paymentService;
 
     // ── List ─────────────────────────────────────────────────────────────────
     @GetMapping
@@ -44,9 +47,13 @@ public class BillingController {
 
     // ── New form ─────────────────────────────────────────────────────────────
     @GetMapping("/new")
-    public String newForm(@RequestParam(defaultValue="QUOTATION") String type, Model m) {
+    public String newForm(@RequestParam(defaultValue="QUOTATION") String type, 
+                          @RequestParam(required=false) Long projectId,
+                          Model m) {
         m.addAttribute("customers", customerService.getAll(0, 500, null).getContent());
         m.addAttribute("products",  inventoryService.getAll());
+        m.addAttribute("projects",  projectService.getAll(0, 1000, null).getContent());
+        m.addAttribute("selectedProjectId", projectId);
         m.addAttribute("invoiceType", type);
         m.addAttribute("ItemType",  com.levanto.flooring.enums.ItemType.class);
         return "billing/form";
@@ -97,6 +104,7 @@ public class BillingController {
     @GetMapping("/{id}")
     public String view(@PathVariable Long id, Model m) {
         m.addAttribute("tx",                billingService.getById(id));
+        m.addAttribute("totalReceived",     paymentService.totalReceivedForTransaction(id));
         m.addAttribute("TransactionStatus", TransactionStatus.class);
         m.addAttribute("PaymentStatus",     PaymentStatus.class);
         return "billing/view";

@@ -1,0 +1,14 @@
+CREATE USER levantotestuser IDENTIFIED BY "Treizeuser@13";
+
+GRANT CREATE SESSION TO levantotestuser;
+
+GRANT CREATE TABLE TO levantotestuser;
+GRANT CREATE SEQUENCE TO levantotestuser;
+GRANT CREATE VIEW TO levantotestuser;
+GRANT CREATE PROCEDURE TO levantotestuser;
+GRANT CREATE TRIGGER TO levantotestuser;
+
+-- Unlimited space to store data
+GRANT UNLIMITED TABLESPACE TO levantotestuser;
+
+

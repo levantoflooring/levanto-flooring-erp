@@ -59,6 +59,31 @@
       </div>
     </div>
 
+    <!-- Project & Advance (Optional) -->
+    <div class="card card-levanto mb-3">
+      <div class="card-header"><i class="bi bi-briefcase me-2"></i>Project Mapping</div>
+      <div class="card-body">
+        <div class="row g-2 align-items-end">
+          <div class="col-md-6">
+            <label class="form-label fw-bold">Map Project (Optional)</label>
+            <select id="projectId" name="projectId" class="form-select" onchange="loadAdvances()">
+              <option value="">-- No Project --</option>
+              <option th:each="p : ${projects}" th:value="${p.id}" 
+                      th:text="${p.name} + ' (' + ${p.clientName} + ')'"
+                      th:selected="${p.id == selectedProjectId}"></option>
+            </select>
+          </div>
+          <div class="col-md-6" id="advanceContainer">
+            <label class="form-label fw-bold">Select Advance Payment</label>
+            <select id="advanceId" name="advanceId" class="form-select" onchange="recalc()">
+              <option value="">-- Select Advance --</option>
+            </select>
+            <small class="text-success" id="advanceHint"></small>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- GST Controls -->
     <div class="card card-levanto mb-3">
       <div class="card-header"><i class="bi bi-percent me-2"></i>GST Settings</div>
@@ -117,6 +142,29 @@
         <textarea id="notes" class="form-control" rows="2" placeholder="Optional notes for this document…"></textarea>
       </div>
     </div>
+
+    <!-- Custom Terms -->
+    <div class="card card-levanto mb-3" id="termsCard">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span><i class="bi bi-file-text me-2"></i>Terms & Conditions</span>
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="showCustomTerms" onchange="toggleTerms()">
+          <label class="form-check-label small" for="showCustomTerms">Add Custom Terms</label>
+        </div>
+      </div>
+      <div class="card-body" id="termsBody" style="display:none;">
+        <textarea id="customTerms" class="form-control" rows="8">
+• An authorized site supervisor will oversee and ensure the proper application of materials and procedures on-site. 
+• All products supplied are accompanied by a technical data sheet. 
+• The client is responsible for providing continuous availability of safe storage, scaffolding, electricity, and water during the working period. 
+• The contract is based on a re-measurable system; the final area will be measured once the work is completed. 
+• If additional work is required beyond the scope, the quote may be revised after proper discussion with the client. 
+• Payment Terms: 
+  - A 50% advance of the total project cost must be paid before the materials are delivered to the site. 
+  - The remaining balance should be paid immediately upon completion of the work. 
+• The quotation is valid for 30 days from the date of issue. If the work extends beyond this period, the quotation may be revised after discussion.</textarea>
+      </div>
+    </div>
   </div>
 
   <!-- Right column: totals + submit -->
@@ -129,6 +177,7 @@
       <div id="cgstRow" class="t-row"><span id="cgstLabel">CGST (9%)</span><span id="tCgst">₹ 0.00</span></div>
       <div id="sgstRow" class="t-row"><span id="sgstLabel">SGST (9%)</span><span id="tSgst">₹ 0.00</span></div>
       <div id="igstRow" class="t-row" style="display:none;"><span id="igstLabel">IGST (18%)</span><span id="tIgst">₹ 0.00</span></div>
+      <div id="advanceRow" class="t-row" style="display:none;color:#fbbf24;"><span id="advanceLabel">Advance Deduction</span><span id="tAdvance">- ₹ 0.00</span></div>
       <div class="t-row grand"><span>GRAND TOTAL</span><span id="tGrand">₹ 0.00</span></div>
     </div>
     <div class="card card-levanto">
@@ -188,7 +237,37 @@
 <th:block th:insert="~{fragments/layout :: scripts}"></th:block>
 <script th:inline="javascript">
 const allItems = /*[[${products}]]*/ [];
+let currentAdvances = [];
 const CGST_RATE = 9, SGST_RATE = 9;
+
+async function loadAdvances() {
+  const projectId = document.getElementById('projectId').value || 0;
+  const container = document.getElementById('advanceContainer');
+  const select = document.getElementById('advanceId');
+  const hint = document.getElementById('advanceHint');
+  
+  try {
+    const res = await fetch(`/admin/projects/${projectId}/advances/api/unsettled`);
+    currentAdvances = await res.json();
+    
+    select.innerHTML = '<option value="">-- Select Advance --</option>';
+    currentAdvances.forEach(a => {
+      const label = a.project ? `${a.receiptNumber} [${a.project.name}] (₹${a.amount})` : `${a.receiptNumber} (₹${a.amount})`;
+      const opt = new Option(label, a.id);
+      opt.dataset.amount = a.amount;
+      select.appendChild(opt);
+    });
+    
+    if (currentAdvances.length === 0) {
+      hint.textContent = projectId == 0 ? 'No unsettled advances found.' : 'No advances for this project.';
+    } else {
+      hint.textContent = '';
+    }
+  } catch (e) {
+    console.error('Failed to load advances', e);
+  }
+  recalc();
+}
 
 function addRow(type) {
   const tmpl = document.getElementById('rowTemplate').content.cloneNode(true);
@@ -288,7 +367,19 @@ function recalc() {
   document.getElementById('tCgst').textContent     = '₹ ' + totalCgst.toFixed(2);
   document.getElementById('tSgst').textContent     = '₹ ' + totalSgst.toFixed(2);
   document.getElementById('tIgst').textContent     = '₹ ' + totalIgst.toFixed(2);
-  document.getElementById('tGrand').textContent    = '₹ ' + (subtotal + totalCgst + totalSgst + totalIgst).toFixed(2);
+  
+  const advSelect = document.getElementById('advanceId');
+  const advAmount = advSelect && advSelect.value ? parseFloat(advSelect.selectedOptions[0].dataset.amount) || 0 : 0;
+  
+  if (advAmount > 0) {
+    document.getElementById('advanceRow').style.display = 'flex';
+    document.getElementById('tAdvance').textContent = '- ₹ ' + advAmount.toFixed(2);
+  } else {
+    document.getElementById('advanceRow').style.display = 'none';
+  }
+  
+  const grandTotal = (subtotal + totalCgst + totalSgst + totalIgst);
+  document.getElementById('tGrand').textContent    = '₹ ' + grandTotal.toFixed(2);
 }
 
 function toggleGstType() {
@@ -297,6 +388,10 @@ function toggleGstType() {
   const shouldEnable = gstOn || taxAll;
   document.getElementById('gstTypeContainer').style.opacity = shouldEnable ? '1' : '0.4';
   document.querySelectorAll('input[name="gstType"]').forEach(i => i.disabled = !shouldEnable);
+}
+
+function toggleTerms() {
+  document.getElementById('termsBody').style.display = document.getElementById('showCustomTerms').checked ? 'block' : 'none';
 }
 
 function saveDoc(docType) {
@@ -340,7 +435,11 @@ function saveDoc(docType) {
     gstEnabled:   document.getElementById('gstEnabled').checked,
     taxAllItems:  document.getElementById('taxAllItems').checked,
     gstType:      document.querySelector('input[name="gstType"]:checked').value,
+    projectId:    document.getElementById('projectId').value || null,
+    advanceId:    document.getElementById('advanceId').value || null,
     notes:        document.getElementById('notes').value,
+    customTerms:  document.getElementById('customTerms').value,
+    showCustomTerms: document.getElementById('showCustomTerms').checked,
     items
   };
 
@@ -366,5 +465,9 @@ document.getElementById('taxAllItems').addEventListener('change', () => {
   recalc();
   toggleGstType();
 });
+
+window.onload = () => {
+  loadAdvances();
+};
 </script>
 </body></html>

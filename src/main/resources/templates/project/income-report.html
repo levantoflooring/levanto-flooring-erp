@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragments/layout :: head('Project Income Report')}"></head>
+<body>
+<th:block th:insert="~{fragments/layout :: sidebar('projects')}"></th:block>
+<div id="main">
+  <th:block th:insert="~{fragments/layout :: topbar('Income Report')}"></th:block>
+  <div class="pb">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <a th:href="'/admin/projects/' + ${project.id}" class="btn btn-sm btn-outline-secondary me-2">
+          <i class="bi bi-arrow-left"></i>
+        </a>
+        <h5 class="d-inline-block mb-0" style="font-family:'Cormorant Garamond',serif; font-weight:700;" 
+            th:text="'Income Report: ' + ${project.name}">-</h5>
+      </div>
+      <div>
+        <button class="btn btn-sm btn-outline-navy me-2" onclick="window.print()"><i class="bi bi-printer me-1"></i>Print</button>
+        <a th:href="'/admin/projects/' + ${project.id} + '/income-report/pdf'" class="btn btn-sm btn-gold">
+          <i class="bi bi-file-earmark-pdf me-1"></i>Download PDF
+        </a>
+      </div>
+    </div>
+
+    <div class="card card-lv">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-lv mb-0" id="incomeTable">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th class="text-end">Total Bill Amount</th>
+                <th class="text-end">Received So Far</th>
+                <th class="text-end">Pending</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Bills Section -->
+              <tr th:each="b : ${bills}">
+                <td th:text="${#temporals.format(b.createdAt, 'dd MMM yyyy')}">-</td>
+                <td>
+                  <div class="fw-bold" th:text="${b.invoiceNumber ?: b.quotationNumber}">-</div>
+                  <div th:if="${settledAdvancesMap.containsKey(b.id)}" class="small text-muted">
+                    <i class="bi bi-link-45deg me-1"></i>Advance: 
+                    <span th:text="${settledAdvancesMap.get(b.id).receiptNumber}"></span>
+                    (₹<span th:text="${#numbers.formatDecimal(settledAdvancesMap.get(b.id).amount, 1, 'COMMA', 2, 'POINT')}"></span>)
+                  </div>
+                </td>
+                <td class="text-end" 
+                    th:text="'₹' + ${#numbers.formatDecimal(b.grandTotal, 1, 'COMMA', 2, 'POINT')}"></span>
+                <td class="text-end fw-bold text-success" 
+                    th:text="'₹' + ${#numbers.formatDecimal(billTotalsMap.getOrDefault(b.id, T(java.math.BigDecimal).ZERO), 1, 'COMMA', 2, 'POINT')}"></span>
+                <td class="text-end text-danger" 
+                    th:text="'₹' + ${#numbers.formatDecimal(b.grandTotal - billTotalsMap.getOrDefault(b.id, T(java.math.BigDecimal).ZERO), 1, 'COMMA', 2, 'POINT')}"></span>
+              </tr>
+
+              <!-- Unsettled Advances Section -->
+              <tr th:each="ap : ${unsettledAdvances}">
+                <td th:text="${#temporals.format(ap.paymentDate, 'dd MMM yyyy')}">-</td>
+                <td>
+                  <div class="fw-bold" th:text="${ap.receiptNumber}">-</div>
+                  <div class="small text-muted">Advance Payment (Unsettled)</div>
+                </td>
+                <td class="text-end">—</td>
+                <td class="text-end fw-bold text-success" 
+                    th:text="'₹' + ${#numbers.formatDecimal(ap.amount, 1, 'COMMA', 2, 'POINT')}"></span>
+                <td class="text-end text-danger">—</td>
+              </tr>
+
+              <tr th:if="${#lists.isEmpty(bills) and #lists.isEmpty(unsettledAdvances)}">
+                <td colspan="5" class="text-center text-muted py-4">No income records found for this project.</td>
+              </tr>
+            </tbody>
+            <tfoot class="table-light fw-bold" th:if="${not #lists.isEmpty(bills) or not #lists.isEmpty(unsettledAdvances)}">
+              <tr>
+                <td colspan="2">TOTAL</td>
+                <td class="text-end" id="sumBill">₹0.00</td>
+                <td class="text-end text-success" id="sumReceived">₹0.00</td>
+                <td class="text-end text-danger" id="sumPending">₹0.00</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<th:block th:insert="~{fragments/layout :: scripts}"></th:block>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    let sumBill = 0, sumReceived = 0, sumPending = 0;
+    
+    document.querySelectorAll('#incomeTable tbody tr').forEach(row => {
+      const cells = row.querySelectorAll('td');
+      if (cells.length < 5) return;
+      
+      const billAmt = parseFloat(cells[2].textContent.replace(/[₹,]/g, '')) || 0;
+      const recvAmt = parseFloat(cells[3].textContent.replace(/[₹,]/g, '')) || 0;
+      const pendAmt = parseFloat(cells[4].textContent.replace(/[₹,]/g, '')) || 0;
+      
+      sumBill += billAmt;
+      sumReceived += recvAmt;
+      sumPending += pendAmt;
+    });
+    
+    document.getElementById('sumBill').textContent = '₹' + sumBill.toLocaleString('en-IN', {minimumFractionDigits: 2});
+    document.getElementById('sumReceived').textContent = '₹' + sumReceived.toLocaleString('en-IN', {minimumFractionDigits: 2});
+    document.getElementById('sumPending').textContent = '₹' + sumPending.toLocaleString('en-IN', {minimumFractionDigits: 2});
+  });
+</script>
+</body>
+</html>

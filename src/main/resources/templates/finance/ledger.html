@@ -50,10 +50,15 @@
                   <td th:text="${idx.count}">1</td>
                   <td><small th:text="${#temporals.format(inc.date,'dd MMM yyyy')}">-</small></td>
                   <td>
-                    <a th:href="'/admin/billing/'+${inc.transaction.id}"
+                    <a th:if="${inc.transaction != null}" th:href="'/admin/billing/'+${inc.transaction.id}"
                        th:text="${inc.inventoryNumber}" style="color:#C8972A;font-weight:600;">-</a>
+                    <span th:if="${inc.transaction == null}" th:text="${inc.inventoryNumber}" class="fw-bold">-</span>
                   </td>
-                  <td th:text="${inc.transaction.customer.name}">-</td>
+                  <td>
+                    <span th:if="${inc.transaction != null}" th:text="${inc.transaction.customer.name}">-</span>
+                    <span th:if="${inc.advancePayment != null}" 
+                          th:text="${inc.advancePayment.project != null ? inc.advancePayment.project.clientName + ' (Project: ' + inc.advancePayment.project.name + ')' : inc.advancePayment.collectedFrom}"> - </span>
+                  </td>
                   <td>
                     <span class="badge"
                           th:text="${inc.title}"
