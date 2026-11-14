@@ -40,6 +40,12 @@
       <artifactId>ojdbc11</artifactId>
       <scope>runtime</scope>
     </dependency>
+    <!-- H2 Database (for testing & Docker) -->
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>runtime</scope>
+    </dependency>
     <!-- iText PDF -->
     <dependency>
       <groupId>com.itextpdf</groupId>

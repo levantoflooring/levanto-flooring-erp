@@ -1,0 +1,25 @@
+# Build artifacts
+target/
+bin/
+
+# User uploads and runtime data
+uploads/
+data/
+*.log
+
+# Git
+.git/
+.gitignore
+
+# IDE and Project metadata
+.idea/
+.vscode/
+.settings/
+.project
+.classpath
+*.iml
+
+# Docker files
+docker-compose*.yml
+Dockerfile
+
