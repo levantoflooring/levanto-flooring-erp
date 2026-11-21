@@ -75,15 +75,20 @@
       --navy-card: rgba(16, 38, 64, 0.78);
       --navy-card-hover: rgba(22, 51, 85, 0.92);
       --gold: #C8972A;
+      --gold-dark: #946912;
       --gold-lt: #E2B548;
       --gold-pale: #F4DC9E;
       --gold-glow: rgba(200, 151, 42, 0.28);
       --white: #FFFFFF;
       --muted: #8EA8C2;
+      --text-muted: #8EA8C2;
+      --text-dim: #D1DCE5;
       --border: rgba(200, 151, 42, 0.18);
+      --border-gold: rgba(200, 151, 42, 0.35);
       --border-hover: rgba(200, 151, 42, 0.55);
       --whatsapp: #25D366;
       --whatsapp-dark: #128C7E;
+      --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
       --radius-sm: 8px;
       --radius-md: 14px;
       --radius-lg: 20px;
@@ -3352,6 +3357,458 @@
         grid-template-columns: 1fr;
       }
     }
+    /* ══════════════════════════════════════════════════════════════
+       OPTION B: DAYLIGHT SHOWROOM / NIGHT STUDIO THEME TOGGLE
+    ══════════════════════════════════════════════════════════════ */
+
+    /* Theme Toggle Button */
+    .theme-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.46rem 0.95rem;
+      border-radius: 20px;
+      background: rgba(200, 151, 42, 0.12);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-pale);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(8px);
+      flex-shrink: 0;
+      order: 99;
+    }
+
+    @media (max-width: 600px) {
+      .theme-toggle-btn .theme-toggle-lbl {
+        display: none;
+      }
+      .theme-toggle-btn {
+        padding: 0.45rem 0.68rem;
+      }
+    }
+
+    .theme-toggle-btn:hover {
+      background: rgba(200, 151, 42, 0.24);
+      border-color: var(--gold);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(200, 151, 42, 0.25);
+    }
+
+    .theme-toggle-icon {
+      font-size: 0.95rem;
+      line-height: 1;
+    }
+
+    /* ── INTERACTIVE ROOM VISUALIZER (DARK / DEFAULT MODE) ── */
+    #visualizer {
+      padding: 6.5rem 4vw;
+      background: radial-gradient(circle at 50% 15%, rgba(200, 151, 42, 0.08), transparent 60%), #07121F;
+      border-top: 1px solid var(--border);
+      position: relative;
+    }
+
+    .vis-container {
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+
+    .vis-room-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .vis-room-btn {
+      padding: 0.65rem 1.4rem;
+      border-radius: 30px;
+      background: rgba(16, 38, 64, 0.85);
+      border: 1px solid var(--border);
+      color: #FFFFFF;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    }
+
+    .vis-room-btn:hover, .vis-room-btn.active {
+      background: var(--gold);
+      color: #081524;
+      border-color: var(--gold);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(200, 151, 42, 0.35);
+    }
+
+    .vis-stage {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border);
+      height: 520px;
+      background: #0D1B2A;
+    }
+
+    .vis-room-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: opacity 0.5s ease, transform 0.6s ease;
+    }
+
+    .vis-overlay-card {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      background: rgba(8, 21, 36, 0.92);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-gold);
+      padding: 1.3rem 1.7rem;
+      border-radius: var(--radius-md);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+      max-width: 380px;
+      z-index: 5;
+    }
+
+    .vis-tag-badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold-lt);
+      margin-bottom: 0.35rem;
+    }
+
+    .vis-tag-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      color: #FFFFFF;
+      margin-bottom: 0.35rem;
+      font-weight: 600;
+    }
+
+    .vis-tag-specs {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.45;
+      margin-bottom: 1rem;
+    }
+
+    .vis-tag-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.1rem;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold) 50%, var(--gold-lt));
+      color: #081524;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 12px var(--gold-glow);
+    }
+
+    .vis-tag-action:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
+    .vis-swatches {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.1rem;
+      margin-top: 2rem;
+    }
+
+    .vis-swatch-card {
+      background: rgba(16, 38, 64, 0.75);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.1rem 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    }
+
+    .vis-swatch-card:hover, .vis-swatch-card.active {
+      border-color: var(--gold);
+      transform: translateY(-4px);
+      background: rgba(22, 51, 85, 0.95);
+      box-shadow: 0 12px 28px rgba(200, 151, 42, 0.25);
+    }
+
+    .vis-swatch-card.active {
+      border-width: 2px;
+      border-color: var(--gold-lt);
+    }
+
+    .vis-swatch-preview {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+    }
+
+    .vis-swatch-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .vis-swatch-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .vis-swatch-name {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      line-height: 1.3;
+    }
+
+    .vis-swatch-type {
+      font-size: 0.74rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    @media (max-width: 768px) {
+      .vis-stage { height: 380px; }
+      .vis-overlay-card {
+        bottom: 12px;
+        left: 12px;
+        right: 12px;
+        max-width: none;
+        padding: 1rem 1.2rem;
+      }
+      .vis-tag-title { font-size: 1.25rem; }
+      .vis-swatches { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       DAYLIGHT SHOWROOM MODE (ACTIVATED VIA [data-theme="light"])
+    ══════════════════════════════════════════════════════════════ */
+    html[data-theme="light"] {
+      --navy-deep: #FAF8F5;
+      --navy: #F3ECE1;
+      --navy-mid: #E8DFCE;
+      --navy-card: #FFFFFF;
+      --navy-card-hover: #FFFFFF;
+      --gold: #B8861B;
+      --gold-dark: #946912;
+      --gold-lt: #8A600A;
+      --gold-pale: #6E4A05;
+      --gold-glow: rgba(184, 134, 27, 0.16);
+      --white: #14181E;
+      --muted: #525C68;
+      --text-muted: #647080;
+      --text-dim: #38424E;
+      --border: rgba(184, 134, 27, 0.18);
+      --border-gold: rgba(184, 134, 27, 0.28);
+      --border-hover: rgba(184, 134, 27, 0.55);
+      --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+
+    html[data-theme="light"] body {
+      background: #FAF8F5 !important;
+      color: #14181E !important;
+    }
+
+    html[data-theme="light"] .ambient-glow {
+      background:
+        radial-gradient(circle at 12% 15%, rgba(184, 134, 27, 0.09) 0%, transparent 45%),
+        radial-gradient(circle at 88% 65%, rgba(235, 218, 190, 0.45) 0%, transparent 55%),
+        radial-gradient(circle at 50% 90%, rgba(184, 134, 27, 0.06) 0%, transparent 50%) !important;
+    }
+
+    html[data-theme="light"] nav {
+      background: rgba(250, 248, 245, 0.94) !important;
+      border-bottom: 1px solid var(--border) !important;
+    }
+    html[data-theme="light"] nav.scrolled {
+      background: rgba(250, 248, 245, 0.98) !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06), 0 1px 0 rgba(184, 134, 27, 0.2) !important;
+    }
+    html[data-theme="light"] .nav-logo-name { color: #14181E !important; }
+    html[data-theme="light"] .nav-logo-sub { color: #727C88 !important; }
+    html[data-theme="light"] .nav-links a { color: #2D333B !important; }
+    html[data-theme="light"] .nav-links a:hover { color: var(--gold) !important; }
+    html[data-theme="light"] .nav-hamburger span { background: #14181E !important; }
+    html[data-theme="light"] .mobile-menu {
+      background: rgba(250, 248, 245, 0.98) !important;
+      border-left: 1px solid var(--border) !important;
+    }
+    html[data-theme="light"] .mobile-nav-link { color: #14181E !important; }
+
+    html[data-theme="light"] .theme-toggle-btn {
+      background: rgba(184, 134, 27, 0.12) !important;
+      color: #6E4A05 !important;
+      border-color: rgba(184, 134, 27, 0.3) !important;
+    }
+
+    html[data-theme="light"] #hero {
+      background: linear-gradient(180deg, #FAF8F5 0%, #F5EFE6 50%, #FAF8F5 100%) !important;
+    }
+    html[data-theme="light"] .hero-badge {
+      background: rgba(184, 134, 27, 0.1) !important;
+      border-color: var(--border-gold) !important;
+      color: var(--gold-pale) !important;
+    }
+    html[data-theme="light"] .hero-title { color: #14181E !important; }
+    html[data-theme="light"] .hero-title em {
+      background: linear-gradient(135deg, #8A600A, #B8861B 50%, #6E4A05) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+    }
+    html[data-theme="light"] .hero-sub { color: #4A535E !important; }
+    html[data-theme="light"] .hero-stats {
+      background: #FFFFFF !important;
+      border: 1px solid var(--border) !important;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.06) !important;
+    }
+    html[data-theme="light"] .stat-item { border-right: 1px solid rgba(184, 134, 27, 0.14) !important; }
+    html[data-theme="light"] .stat-num { color: #14181E !important; }
+    html[data-theme="light"] .stat-label { color: #6A7480 !important; }
+
+    html[data-theme="light"] .sec-title { color: #14181E !important; }
+    html[data-theme="light"] .sec-sub { color: #525C68 !important; }
+    html[data-theme="light"] .sec-eyebrow {
+      color: var(--gold) !important;
+      background: rgba(184, 134, 27, 0.1) !important;
+      border: 1px solid var(--border-gold) !important;
+    }
+
+    html[data-theme="light"] .svc-card,
+    html[data-theme="light"] .price-card,
+    html[data-theme="light"] .timeline-card,
+    html[data-theme="light"] .pillar-card,
+    html[data-theme="light"] .testimonial-card,
+    html[data-theme="light"] .estimator-card,
+    html[data-theme="light"] .contact-card,
+    html[data-theme="light"] .c-card,
+    html[data-theme="light"] .form-box,
+    html[data-theme="light"] .hub-card,
+    html[data-theme="light"] .map-card,
+    html[data-theme="light"] .audit-guarantee-card,
+    html[data-theme="light"] .faq-item,
+    html[data-theme="light"] .cert-badge,
+    html[data-theme="light"] .brochure-banner {
+      background: #FFFFFF !important;
+      border: 1px solid rgba(184, 134, 27, 0.18) !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+    }
+
+    html[data-theme="light"] .svc-card:hover,
+    html[data-theme="light"] .price-card:hover,
+    html[data-theme="light"] .testimonial-card:hover,
+    html[data-theme="light"] .hub-card:hover,
+    html[data-theme="light"] .hub-card.active {
+      background: #FFFFFF !important;
+      border-color: var(--gold) !important;
+      box-shadow: 0 16px 40px rgba(184, 134, 27, 0.15), 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+    }
+
+    html[data-theme="light"] .svc-title,
+    html[data-theme="light"] .price-service-name,
+    html[data-theme="light"] .timeline-title,
+    html[data-theme="light"] .pillar-title,
+    html[data-theme="light"] .faq-q,
+    html[data-theme="light"] .hub-title,
+    html[data-theme="light"] .form-title,
+    html[data-theme="light"] .testimonial-author {
+      color: #14181E !important;
+    }
+
+    html[data-theme="light"] .svc-desc,
+    html[data-theme="light"] .price-features li,
+    html[data-theme="light"] .timeline-desc,
+    html[data-theme="light"] .pillar-desc,
+    html[data-theme="light"] .faq-a,
+    html[data-theme="light"] .hub-desc,
+    html[data-theme="light"] .form-sub,
+    html[data-theme="light"] .testimonial-text {
+      color: #505965 !important;
+    }
+
+    html[data-theme="light"] .price-num { color: #14181E !important; }
+
+    html[data-theme="light"] .form-control,
+    html[data-theme="light"] .brochure-input,
+    html[data-theme="light"] .calc-select,
+    html[data-theme="light"] .calc-range {
+      background: #FAF8F5 !important;
+      border: 1px solid rgba(184, 134, 27, 0.22) !important;
+      color: #14181E !important;
+    }
+
+    html[data-theme="light"] .form-control:focus,
+    html[data-theme="light"] .brochure-input:focus,
+    html[data-theme="light"] .calc-select:focus {
+      border-color: var(--gold) !important;
+      background: #FFFFFF !important;
+      box-shadow: 0 0 0 3px rgba(184, 134, 27, 0.15) !important;
+    }
+
+    html[data-theme="light"] #coverage {
+      background: linear-gradient(180deg, #FAF8F5 0%, #F5ECE0 50%, #FAF8F5 100%) !important;
+    }
+
+    html[data-theme="light"] #visualizer {
+      background: linear-gradient(180deg, #FAF8F5 0%, #F5ECE0 50%, #FAF8F5 100%) !important;
+    }
+    html[data-theme="light"] .vis-room-btn {
+      background: #FFFFFF !important;
+      color: #2D333B !important;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03) !important;
+    }
+    html[data-theme="light"] .vis-room-btn:hover,
+    html[data-theme="light"] .vis-room-btn.active {
+      background: var(--gold) !important;
+      color: #FFFFFF !important;
+    }
+    html[data-theme="light"] .vis-overlay-card {
+      background: rgba(255, 255, 255, 0.94) !important;
+      color: #14181E !important;
+    }
+    html[data-theme="light"] .vis-tag-title { color: #14181E !important; }
+    html[data-theme="light"] .vis-tag-specs { color: #55606E !important; }
+    html[data-theme="light"] .vis-swatch-card {
+      background: #FFFFFF !important;
+    }
+    html[data-theme="light"] .vis-swatch-card:hover,
+    html[data-theme="light"] .vis-swatch-card.active {
+      background: #FCFAF6 !important;
+      border-color: var(--gold) !important;
+    }
+    html[data-theme="light"] .vis-swatch-name { color: #14181E !important; }
+    html[data-theme="light"] .vis-swatch-type { color: #6C7785 !important; }
+
+    html[data-theme="light"] .map-pin-label {
+      background: #FFFFFF !important;
+      color: #14181E !important;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    html[data-theme="light"] footer {
+      background: #111419 !important;
+      color: #FAF8F5 !important;
+    }
   </style>
 </head>
 
@@ -3395,6 +3852,12 @@
         <span></span>
         <span></span>
       </button>
+
+      <!-- THEME SWITCHER: FAR TOP-RIGHT CORNER -->
+      <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Daylight / Night Showroom" title="Switch Showroom Lighting">
+        <span class="theme-toggle-icon">☀️</span>
+        <span class="theme-toggle-lbl">Daylight</span>
+      </button>
     </div>
   </nav>
 
@@ -3407,7 +3870,12 @@
       <li><a href="#about" class="mobile-nav-link">About</a></li>
       <li><a href="#contact" class="mobile-nav-link">Contact</a></li>
     </ul>
-    <div class="mobile-menu-actions">
+        <div class="mobile-menu-actions">
+      <!-- MOBILE THEME SWITCHER -->
+      <button class="theme-toggle-btn mobile-theme-toggle" id="mobileThemeToggleBtn" aria-label="Toggle Theme" style="width:100%; justify-content:center; margin-bottom:0.75rem;">
+        <span class="theme-toggle-icon">☀️</span>
+        <span class="theme-toggle-lbl">Daylight Showroom</span>
+      </button>
       <a href="https://wa.me/919633640064?text=Hello%20Levanto%20Flooring%2C%20I%20have%20an%20enquiry%20regarding%20flooring%20solutions." target="_blank" class="nav-wa-btn">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
         WhatsApp Chat
@@ -3589,6 +4057,102 @@
       <div class="poster-progress-bar" id="posterProgressBar"></div>
     </div>
   </section>
+  <!-- ═══════════════════════════════════════════
+       INTERACTIVE ROOM & FLOOR VISUALIZER STUDIO
+  ═══════════════════════════════════════════ -->
+  <section id="visualizer">
+    <div class="vis-container">
+      <div class="sec-header">
+        <span class="sec-eyebrow">Interactive Architectural Studio</span>
+        <h2 class="sec-title">Visualize Floors in <em>Real Living Spaces</em></h2>
+        <p class="sec-sub">Select an architectural room setting below and test French chevron oak, seamless metallic epoxy, herringbone teak, rigid stone SPC, or Italian statuario marble in real-time.</p>
+      </div>
+
+      <!-- Room Setting Tabs -->
+      <div class="vis-room-tabs" id="visRoomTabs">
+        <button class="vis-room-btn active" data-room="living">🛋️ Luxury Villa Living Room</button>
+        <button class="vis-room-btn" data-room="bedroom">🛏️ Master Penthouse Suite</button>
+        <button class="vis-room-btn" data-room="kitchen">🍳 Contemporary Open Kitchen</button>
+        <button class="vis-room-btn" data-room="showroom">🏢 Executive Flagship Showroom</button>
+      </div>
+
+      <!-- Main Visualizer Stage -->
+      <div class="vis-stage" id="visStage">
+        <img id="visMainImg" class="vis-room-img" src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&q=80&fit=crop" alt="Sunlit Luxury Living Room with European Chevron Hardwood" />
+
+        <!-- Floating Spec Overlay Card -->
+        <div class="vis-overlay-card" id="visOverlayCard">
+          <span class="vis-tag-badge" id="visTagBadge">Selected Finish</span>
+          <h3 class="vis-tag-title" id="visTagTitle">European Chevron Hardwood</h3>
+          <p class="vis-tag-specs" id="visTagSpecs">Natural European Oak in a classic 45° chevron arrangement with double UV-cured hardwax oil finish and acoustic rubberized underlayment.</p>
+          <a id="visWaLink" href="https://wa.me/919633640064?text=Hello%20Levanto%2C%20I%20tried%20your%20Visualizer%20for%20European%20Chevron%20Hardwood%20in%20a%20Living%20Room.%20Can%20you%20send%20a%20physical%20sample%20box%20and%20rates%3F" target="_blank" class="vis-tag-action">
+            <span>Order Sample Box On WhatsApp →</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Material Swatch Selector Grid -->
+      <div class="vis-swatches" id="visSwatches">
+
+        <!-- Swatch 1: Chevron Oak -->
+        <div class="vis-swatch-card active" data-material="chevron">
+          <div class="vis-swatch-preview">
+            <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=120&q=80&fit=crop" alt="Chevron Oak Swatch" />
+          </div>
+          <div class="vis-swatch-info">
+            <span class="vis-swatch-name">European Chevron Oak</span>
+            <span class="vis-swatch-type">Solid &amp; Engineered Wood</span>
+          </div>
+        </div>
+
+        <!-- Swatch 2: Seamless Epoxy -->
+        <div class="vis-swatch-card" data-material="epoxy">
+          <div class="vis-swatch-preview">
+            <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=120&q=80&fit=crop" alt="Smoky Epoxy Swatch" />
+          </div>
+          <div class="vis-swatch-info">
+            <span class="vis-swatch-name">Smoky Metallic Epoxy</span>
+            <span class="vis-swatch-type">Joint-Free Mirror Polish</span>
+          </div>
+        </div>
+
+        <!-- Swatch 3: Herringbone Teak -->
+        <div class="vis-swatch-card" data-material="herringbone">
+          <div class="vis-swatch-preview">
+            <img src="https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=120&q=80&fit=crop" alt="Herringbone Teak Swatch" />
+          </div>
+          <div class="vis-swatch-info">
+            <span class="vis-swatch-name">Rich Herringbone Teak</span>
+            <span class="vis-swatch-type">Architectural Heritage Timber</span>
+          </div>
+        </div>
+
+        <!-- Swatch 4: Rigid Stone SPC -->
+        <div class="vis-swatch-card" data-material="spc">
+          <div class="vis-swatch-preview">
+            <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=120&q=80&fit=crop" alt="Rigid Stone SPC Swatch" />
+          </div>
+          <div class="vis-swatch-info">
+            <span class="vis-swatch-name">Rigid Stone SPC Vinyl</span>
+            <span class="vis-swatch-type">100% Waterproof Composite</span>
+          </div>
+        </div>
+
+        <!-- Swatch 5: Statuario Marble & Terrazzo -->
+        <div class="vis-swatch-card" data-material="marble">
+          <div class="vis-swatch-preview">
+            <img src="https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=120&q=80&fit=crop" alt="Statuario Marble Swatch" />
+          </div>
+          <div class="vis-swatch-info">
+            <span class="vis-swatch-name">Statuario Italian Marble</span>
+            <span class="vis-swatch-type">Diamond Nano-Crystallized</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
 
   <!-- SERVICES SECTION -->
   <section id="services">
@@ -5162,9 +5726,9 @@
           const currentOpacity = p.opacity * (0.6 + 0.4 * Math.sin(p.pulse));
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(229, 184, 88, ${currentOpacity})`;
-          ctx.shadowBlur = 8;
-          ctx.shadowColor = 'rgba(200, 151, 42, 0.6)';
+          ctx.fillStyle = `rgba(184, 134, 27, ${currentOpacity * 0.65})`;
+          ctx.shadowBlur = 6;
+          ctx.shadowColor = 'rgba(184, 134, 27, 0.35)';
           ctx.fill();
         });
         requestAnimationFrame(draw);
@@ -5245,6 +5809,224 @@
         });
       });
     })();
+
+    // ── INTERACTIVE ROOM & FLOOR VISUALIZER ──
+    (function initFloorVisualizer() {
+      const roomBtns = document.querySelectorAll('.vis-room-btn');
+      const swatchCards = document.querySelectorAll('.vis-swatch-card');
+      const mainImg = document.getElementById('visMainImg');
+      const tagTitle = document.getElementById('visTagTitle');
+      const tagSpecs = document.getElementById('visTagSpecs');
+      const waLink = document.getElementById('visWaLink');
+
+      // Room & Material Imagery Matrix
+      const VIS_DATA = {
+        living: {
+          name: 'Luxury Villa Living Room',
+          chevron: {
+            title: 'European Chevron Oak Parquet',
+            img: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&q=80&fit=crop',
+            specs: 'Warm European Oak in a classic 45° chevron arrangement with double UV-cured hardwax oil finish and acoustic underlayment.'
+          },
+          epoxy: {
+            title: 'Smoky Metallic Seamless Epoxy',
+            img: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80&fit=crop',
+            specs: 'High-reflectivity seamless metallic polyurethane-epoxy with jointless flow, extreme abrasion resistance, and modern minimalist depth.'
+          },
+          herringbone: {
+            title: 'Rich Herringbone Plantation Teak',
+            img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80&fit=crop',
+            specs: 'Selected grade natural teak herringbone parquet with natural grain richness, anti-warp moisture balance, and satin natural luster.'
+          },
+          spc: {
+            title: 'Rigid Core Stone Composite (SPC)',
+            img: 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=1200&q=80&fit=crop',
+            specs: '100% waterproof rigid limestone composite with ultra-realistic timber grain, IXPE acoustic backing, and zero maintenance.'
+          },
+          marble: {
+            title: 'Statuario Marble & Diamond Terrazzo',
+            img: 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=1200&q=80&fit=crop',
+            specs: 'Multi-stage diamond abrasive restoration with nano-lithium crystallization and hydrophobic seal for mirror-finish reflectivity.'
+          }
+        },
+        bedroom: {
+          name: 'Master Penthouse Suite',
+          chevron: {
+            title: 'Nordic Light Chevron Oak',
+            img: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=1200&q=80&fit=crop',
+            specs: 'Scandinavian light oak chevron parquet creating soft ambient light and warm barefoot tactile comfort in private sleeping quarters.'
+          },
+          epoxy: {
+            title: 'Matte Sand Architectural Epoxy',
+            img: 'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=1200&q=80&fit=crop',
+            specs: 'Ultra-matte neutral beige seamless flooring offering serene acoustic dampening and hypoallergenic cleanliness.'
+          },
+          herringbone: {
+            title: 'Dark Walnut Heritage Herringbone',
+            img: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1200&q=80&fit=crop',
+            specs: 'Deep espresso European walnut parquet imparting intimacy and regal architectural warmth to master suites.'
+          },
+          spc: {
+            title: 'Smoked Oak Luxury Rigid SPC',
+            img: 'https://images.unsplash.com/photo-1617806118233-18e1de247200?w=1200&q=80&fit=crop',
+            specs: 'Waterproof luxury vinyl plank with embossed-in-register deep grain texture and high acoustic comfort.'
+          },
+          marble: {
+            title: 'Botticino Pearl Italian Marble',
+            img: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=80&fit=crop',
+            specs: 'Warm beige Italian marble restored with German diamond compounds for glowing, soft-reflection grandeur.'
+          }
+        },
+        kitchen: {
+          name: 'Contemporary Open Kitchen',
+          chevron: {
+            title: 'Sealed Chevron Engineered Wood',
+            img: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=1200&q=80&fit=crop',
+            specs: 'Hardwax oil impregnated chevron parquet engineered with spill-resistant perimeter nano-barrier.'
+          },
+          epoxy: {
+            title: 'Commercial Food-Grade White Epoxy',
+            img: 'https://images.unsplash.com/photo-1556909212-d5b604d0c90d?w=1200&q=80&fit=crop',
+            specs: 'Antibacterial, seamless, stain-resistant high-performance epoxy completely impervious to oil, acids, and cooking spills.'
+          },
+          herringbone: {
+            title: 'Teak Herringbone with Moisture Seal',
+            img: 'https://images.unsplash.com/photo-1600489000022-c2086d79f9d4?w=1200&q=80&fit=crop',
+            specs: 'Kiln-dried plantation teak with marine-grade subfloor waterproofing designed for kitchen traffic.'
+          },
+          spc: {
+            title: '100% Waterproof Stone Core SPC',
+            img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80&fit=crop',
+            specs: 'Zero swelling, zero warping stone composite that handles pet claws, dropped cookware, and kitchen washing with ease.'
+          },
+          marble: {
+            title: 'Nano-Sealed White Carrara Marble',
+            img: 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=1200&q=80&fit=crop',
+            specs: 'Acid-resistant hydrophobic nano-fluoropolymer impregnation safeguarding delicate marble from wine and oil etches.'
+          }
+        },
+        showroom: {
+          name: 'Executive Flagship Showroom',
+          chevron: {
+            title: 'Architectural Commercial Chevron Parquet',
+            img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80&fit=crop',
+            specs: 'High-traffic commercial wear grade (AC5) European oak chevron for art galleries, luxury boutiques, and executive suites.'
+          },
+          epoxy: {
+            title: 'Mirror Industrial Metallic Polyurethane',
+            img: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80&fit=crop',
+            specs: 'Glass-smooth monolithic floor reflecting modern spotlights with zero expansion joints.'
+          },
+          herringbone: {
+            title: 'Heavy-Duty Teak Architectural Parquet',
+            img: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&q=80&fit=crop',
+            specs: 'Engineered for retail footfall with UV-curable industrial topcoat and easy maintenance.'
+          },
+          spc: {
+            title: 'Commercial Heavy-Duty Rigid SPC',
+            img: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1200&q=80&fit=crop',
+            specs: '0.7mm commercial wear layer with matte stone embossing, perfect for rapid tenant fit-outs.'
+          },
+          marble: {
+            title: 'Diamond High-Gloss Terrazzo Restoration',
+            img: 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=1200&q=80&fit=crop',
+            specs: 'Museum-grade diamond polish producing 85+ gloss units of specular reflectance.'
+          }
+        }
+      };
+
+      let currentRoom = 'living';
+      let currentMaterial = 'chevron';
+
+      function updateVisualizer() {
+        const roomData = VIS_DATA[currentRoom];
+        const data = roomData[currentMaterial] || roomData.chevron;
+
+        if (mainImg) {
+          mainImg.style.opacity = '0.3';
+          mainImg.style.transform = 'scale(1.02)';
+          setTimeout(() => {
+            mainImg.src = data.img;
+            mainImg.onload = () => {
+              mainImg.style.opacity = '1';
+              mainImg.style.transform = 'scale(1)';
+            };
+          }, 150);
+        }
+
+        if (tagTitle) tagTitle.textContent = data.title;
+        if (tagSpecs) tagSpecs.textContent = data.specs;
+
+        if (waLink) {
+          const msg = encodeURIComponent(`Hello Levanto, I used your Interactive Studio to test ${data.title} in the ${roomData.name}. Could you share sample availability and indicative pricing?`);
+          waLink.href = `https://wa.me/919633640064?text=${msg}`;
+        }
+      }
+
+      roomBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          roomBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentRoom = btn.getAttribute('data-room');
+          updateVisualizer();
+        });
+      });
+
+      swatchCards.forEach(card => {
+        card.addEventListener('click', () => {
+          swatchCards.forEach(c => c.classList.remove('active'));
+          card.classList.add('active');
+          currentMaterial = card.getAttribute('data-material');
+          updateVisualizer();
+        });
+      });
+    })();
+
+    // ── THEME TOGGLE CONTROLLER (OPTION B) ──
+    (function initThemeToggle() {
+      const toggleBtns = [
+        document.getElementById('themeToggleBtn'),
+        document.getElementById('mobileThemeToggleBtn')
+      ];
+
+      function applyTheme(theme) {
+        if (theme === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+          toggleBtns.forEach(b => {
+            if (!b) return;
+            b.querySelector('.theme-toggle-icon').textContent = '🌙';
+            b.querySelector('.theme-toggle-lbl').textContent = b.classList.contains('mobile-theme-toggle') ? 'Night Studio' : 'Night';
+          });
+          localStorage.setItem('levanto_theme', 'light');
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+          toggleBtns.forEach(b => {
+            if (!b) return;
+            b.querySelector('.theme-toggle-icon').textContent = '☀️';
+            b.querySelector('.theme-toggle-lbl').textContent = b.classList.contains('mobile-theme-toggle') ? 'Daylight Showroom' : 'Daylight';
+          });
+          localStorage.setItem('levanto_theme', 'dark');
+        }
+      }
+
+      // Check saved preference or default to dark luxury theme
+      const savedTheme = localStorage.getItem('levanto_theme');
+      if (savedTheme === 'light') {
+        applyTheme('light');
+      } else {
+        applyTheme('dark');
+      }
+
+      toggleBtns.forEach(btn => {
+        if (!btn) return;
+        btn.addEventListener('click', () => {
+          const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+          applyTheme(isLight ? 'dark' : 'light');
+        });
+      });
+    })();
+
+
 
 
   </script>
