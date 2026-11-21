@@ -4,7 +4,57 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Levanto — Architectural Flooring &amp; Surface Studio</title>
+  <title>Levanto — Architectural Flooring &amp; Surface Studio | Kerala</title>
+
+  <!-- ── SEO META TAGS ── -->
+  <meta name="description" content="Levanto is Kerala's premier architectural flooring &amp; surface studio. Specialists in hardwood parquet, seamless epoxy, waterproofing, SPC flooring, marble restoration &amp; termite defense across South India." />
+  <meta name="keywords" content="flooring Kerala, hardwood flooring Kochi, epoxy flooring, waterproofing Kerala, SPC flooring, marble polishing, termite proofing, Levanto flooring" />
+  <meta name="author" content="Levanto Flooring Studio" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://levantoflooring.com/" />
+
+  <!-- ── OPEN GRAPH (WhatsApp / Facebook previews) ── -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://levantoflooring.com/" />
+  <meta property="og:title" content="Levanto — Architectural Flooring &amp; Surface Studio | Kerala" />
+  <meta property="og:description" content="Kerala's premier flooring studio. Hardwood parquet, seamless epoxy, waterproofing &amp; more. 4+ years · 30+ bespoke projects. Book a free consultation today." />
+  <meta property="og:image" content="https://levantoflooring.com/images/logo-horizontal.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="en_IN" />
+  <meta property="og:site_name" content="Levanto Flooring" />
+
+  <!-- ── TWITTER / X CARD ── -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Levanto — Architectural Flooring &amp; Surface Studio" />
+  <meta name="twitter:description" content="Kerala's premier flooring studio. 4+ years · 30+ bespoke projects. Book a free site visit today." />
+  <meta name="twitter:image" content="https://levantoflooring.com/images/logo-horizontal.png" />
+
+  <!-- ── STRUCTURED DATA (Google Rich Results) ── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Levanto Flooring Studio",
+    "description": "Architectural flooring and surface studio specializing in hardwood parquet, seamless epoxy, waterproofing, SPC flooring, marble restoration and termite defense.",
+    "url": "https://levantoflooring.com",
+    "telephone": "+919633640064",
+    "email": "info@levantoflooring.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Edavanna",
+      "addressLocality": "Edavanna, Malappuram",
+      "addressRegion": "Kerala",
+      "postalCode": "676541",
+      "addressCountry": "IN"
+    },
+    "areaServed": ["Kerala", "Karnataka", "Tamil Nadu", "South India"],
+    "sameAs": ["https://www.instagram.com/levanto_flooring/"],
+    "openingHours": "Mo-Sa 09:00-18:00",
+    "priceRange": "₹₹"
+  }
+  </script>
+
   <link rel="icon" type="image/png" th:href="@{/images/logo-icon.png}" href="/images/logo-icon.png"/>
   <link rel="shortcut icon" th:href="@{/favicon.ico}" href="/favicon.ico"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1631,6 +1681,15 @@
       background: #20BA5A;
     }
 
+    .wa-ripple-ring {
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 2px solid var(--whatsapp);
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
     .wa-float-btn::before {
       content: '';
       position: absolute;
@@ -2041,14 +2100,1256 @@
     }
 
     @media (max-width: 380px) {
-      .nav-logo-name {
-        font-size: 1.35rem;
+      .nav-logo-name { font-size: 1.35rem; }
+      .nav-logo-sub  { font-size: 0.48rem; }
+      .nav-logo-img  { height: 32px; }
+    }
+
+    /* ═══════════════════════════════════════════
+       PRICING / PACKAGE CARDS
+    ═══════════════════════════════════════════ */
+    #pricing {
+      background: linear-gradient(180deg, var(--navy-deep) 0%, rgba(11,27,44,0.95) 100%);
+      padding: 6.5rem 4vw;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+      gap: 1.8rem;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .price-card {
+      background: var(--navy-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 2.2rem 1.8rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.35s ease;
+    }
+
+    .price-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .price-card:hover { transform: translateY(-6px); border-color: var(--border-hover); box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
+    .price-card:hover::before { opacity: 1; }
+
+    .price-card.featured {
+      border-color: rgba(200,151,42,0.5);
+      background: linear-gradient(145deg, rgba(22,51,85,0.9), rgba(16,38,64,0.95));
+      box-shadow: 0 0 32px rgba(200,151,42,0.12);
+    }
+
+    .price-card.featured::before { opacity: 1; }
+
+    .price-badge {
+      position: absolute;
+      top: 1.2rem; right: 1.2rem;
+      background: var(--gold);
+      color: var(--navy-deep);
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.28rem 0.75rem;
+      border-radius: 20px;
+    }
+
+    .price-icon { font-size: 2rem; margin-bottom: 1rem; }
+
+    .price-service-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 0.4rem;
+      line-height: 1.25;
+    }
+
+    .price-range {
+      display: flex;
+      align-items: baseline;
+      gap: 0.3rem;
+      margin: 1rem 0;
+    }
+
+    .price-from { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .price-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--gold-pale);
+      line-height: 1;
+    }
+
+    .price-unit { font-size: 0.82rem; color: var(--muted); }
+
+    .price-features {
+      list-style: none;
+      margin: 1rem 0 1.6rem;
+      flex-grow: 1;
+    }
+
+    .price-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      font-size: 0.88rem;
+      color: #A4BFD6;
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+    }
+
+    .price-features li::before { content: '✓'; color: var(--gold-lt); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+    .price-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.78rem 1.4rem;
+      border-radius: 30px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      border: 1px solid var(--border-hover);
+      color: var(--gold-pale);
+      background: rgba(200,151,42,0.07);
+    }
+
+    .price-cta:hover { background: var(--gold); color: var(--navy-deep); border-color: var(--gold); transform: translateY(-2px); }
+    .price-card.featured .price-cta { background: var(--gold); color: var(--navy-deep); border-color: var(--gold); }
+    .price-card.featured .price-cta:hover { filter: brightness(1.1); }
+
+    @media (max-width: 600px) { #pricing { padding: 4rem 5vw; } }
+
+    /* ═══════════════════════════════════════════
+       FAQ ACCORDION
+    ═══════════════════════════════════════════ */
+    #faq {
+      background: var(--navy-deep);
+      padding: 6.5rem 4vw;
+    }
+
+    .faq-wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .faq-item {
+      background: var(--navy-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      transition: border-color 0.25s;
+    }
+
+    .faq-item.open { border-color: var(--border-hover); }
+
+    .faq-q {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.3rem 1.5rem;
+      cursor: pointer;
+      gap: 1rem;
+      list-style: none;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--white);
+      transition: color 0.2s;
+      user-select: none;
+    }
+
+    .faq-q::-webkit-details-marker { display: none; }
+    .faq-item.open .faq-q { color: var(--gold-pale); }
+
+    .faq-chevron {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(200,151,42,0.1);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+      color: var(--gold);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .faq-item.open .faq-chevron { background: var(--gold); color: var(--navy-deep); transform: rotate(180deg); border-color: var(--gold); }
+
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.7;
+      padding: 0 1.5rem;
+    }
+
+    .faq-item.open .faq-a { max-height: 500px; padding: 0 1.5rem 1.3rem; }
+
+    @media (max-width: 600px) {
+      #faq { padding: 4rem 5vw; }
+      .faq-q { font-size: 0.93rem; padding: 1.1rem 1.1rem; }
+      .faq-a { padding: 0 1.1rem; }
+      .faq-item.open .faq-a { padding: 0 1.1rem 1.1rem; }
+    }
+
+    /* ═══════════════════════════════════════════
+       BROCHURE / LEAD-CAPTURE BANNER
+    ═══════════════════════════════════════════ */
+    .brochure-banner {
+      background: linear-gradient(135deg, rgba(200,151,42,0.12) 0%, rgba(14,34,56,0.98) 60%);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 3.5rem 4vw;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brochure-banner::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 240px; height: 240px;
+      background: radial-gradient(circle, rgba(200,151,42,0.18), transparent 70%);
+      pointer-events: none;
+    }
+
+    .brochure-banner::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -40px;
+      width: 180px; height: 180px;
+      background: radial-gradient(circle, rgba(200,151,42,0.1), transparent 70%);
+      pointer-events: none;
+    }
+
+    .brochure-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+
+    .brochure-eyebrow {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 0.8rem;
+    }
+
+    .brochure-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.25;
+      margin-bottom: 0.8rem;
+    }
+
+    .brochure-title em { font-style: italic; color: var(--gold-lt); }
+
+    .brochure-sub {
+      font-size: 0.98rem;
+      color: var(--muted);
+      margin-bottom: 1.8rem;
+      line-height: 1.6;
+    }
+
+    .brochure-form {
+      display: flex;
+      gap: 0.75rem;
+      max-width: 480px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .brochure-input {
+      flex: 1;
+      min-width: 200px;
+      background: rgba(8,21,36,0.65);
+      border: 1px solid rgba(200,151,42,0.3);
+      border-radius: 30px;
+      padding: 0.75rem 1.2rem;
+      color: var(--white);
+      font-family: 'Jost', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.25s;
+    }
+
+    .brochure-input::placeholder { color: var(--muted); }
+    .brochure-input:focus { border-color: var(--gold); }
+
+    .brochure-btn {
+      background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+      color: var(--navy-deep);
+      border: none;
+      border-radius: 30px;
+      padding: 0.75rem 1.6rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+    }
+
+    .brochure-btn:hover { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 6px 20px var(--gold-glow); }
+
+    @media (max-width: 600px) {
+      .brochure-banner { padding: 2.8rem 5vw; }
+      .brochure-form { flex-direction: column; align-items: stretch; }
+      .brochure-input, .brochure-btn { min-width: 0; width: 100%; }
+    }
+
+    /* ═══════════════════════════════════════════
+       ENHANCED WHATSAPP CHAT POPUP
+    ═══════════════════════════════════════════ */
+    .wa-chat-popup {
+      position: fixed;
+      bottom: 100px;
+      right: 28px;
+      z-index: 9998;
+      width: 300px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      overflow: hidden;
+      transform: scale(0.85) translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .wa-chat-popup.open {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .wa-popup-header {
+      background: #075E54;
+      padding: 1rem 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .wa-popup-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #25D366;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .wa-popup-name { font-size: 0.95rem; font-weight: 600; color: #fff; }
+    .wa-popup-status { font-size: 0.75rem; color: rgba(255,255,255,0.7); }
+
+    .wa-popup-close {
+      margin-left: auto;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.7);
+      cursor: pointer;
+      font-size: 1.1rem;
+      line-height: 1;
+      padding: 0.2rem;
+      transition: color 0.2s;
+    }
+
+    .wa-popup-close:hover { color: #fff; }
+
+    .wa-popup-body { padding: 1.1rem; background: #ECE5DD; }
+
+    .wa-popup-bubble {
+      background: #fff;
+      border-radius: 0 10px 10px 10px;
+      padding: 0.7rem 0.9rem;
+      font-size: 0.88rem;
+      color: #333;
+      line-height: 1.5;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.12);
+      margin-bottom: 0.6rem;
+    }
+
+    .wa-popup-bubble span { display: block; font-size: 0.72rem; color: #999; text-align: right; margin-top: 4px; }
+
+    .wa-popup-footer { padding: 0.9rem 1rem; background: #fff; }
+
+    .wa-popup-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      background: #25D366;
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      padding: 0.7rem 1.2rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .wa-popup-cta:hover { background: #128C7E; }
+
+    @media (max-width: 600px) {
+      .wa-chat-popup { width: calc(100vw - 32px); right: 16px; bottom: 90px; }
+    }
+
+    /* ═══════════════════════════════════════════
+       FEATURE 3 — BEFORE / AFTER SLIDER
+    ═══════════════════════════════════════════ */
+    #before-after {
+      background: linear-gradient(180deg, var(--navy-deep) 0%, rgba(11,27,44,0.95) 100%);
+      padding: 6.5rem 4vw;
+    }
+
+    .ba-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr));
+      gap: 2.2rem;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .ba-card {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+      position: relative;
+      aspect-ratio: 16/10;
+      cursor: col-resize;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .ba-after-layer {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .ba-before-layer {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      clip-path: inset(0 50% 0 0);
+      transition: clip-path 0s;
+    }
+
+    .ba-divider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 3px;
+      background: var(--gold-lt);
+      transform: translateX(-50%);
+      z-index: 10;
+      pointer-events: none;
+      box-shadow: 0 0 12px rgba(226,181,72,0.6);
+    }
+
+    .ba-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--gold-lt);
+      border: 3px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 11;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      pointer-events: none;
+      font-size: 0.9rem;
+      color: var(--navy-deep);
+      font-weight: 700;
+    }
+
+    .ba-label-before,
+    .ba-label-after {
+      position: absolute;
+      top: 14px;
+      z-index: 12;
+      padding: 0.28rem 0.85rem;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      pointer-events: none;
+    }
+
+    .ba-label-before {
+      left: 14px;
+      background: rgba(8,21,36,0.82);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .ba-label-after {
+      right: 14px;
+      background: rgba(200,151,42,0.18);
+      color: var(--gold-pale);
+      border: 1px solid var(--border-hover);
+    }
+
+    .ba-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 0.9rem 1.2rem;
+      background: linear-gradient(0deg, rgba(8,21,36,0.92) 0%, transparent 100%);
+      z-index: 12;
+      pointer-events: none;
+    }
+
+    .ba-caption h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 0.1rem;
+    }
+
+    .ba-caption span {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .ba-hint {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 1.4rem;
+      opacity: 0.7;
+    }
+
+    @media (max-width: 600px) {
+      #before-after { padding: 4rem 5vw; }
+      .ba-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ═══════════════════════════════════════════
+       FEATURE 4 — COST ESTIMATOR
+    ═══════════════════════════════════════════ */
+    #estimator {
+      background: var(--navy-deep);
+      padding: 6.5rem 4vw;
+    }
+
+    .estimator-wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      background: var(--navy-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 3rem 3rem 2.5rem;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+      backdrop-filter: blur(16px);
+    }
+
+    .estimator-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.4rem 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .est-label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--gold-pale);
+      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .est-select {
+      width: 100%;
+      background: rgba(8,21,36,0.65);
+      border: 1px solid rgba(200,151,42,0.25);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 2.5rem 0.85rem 1.1rem;
+      color: var(--white);
+      font-family: 'Jost', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23C8972A%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1.1rem center;
+      background-size: 10px auto;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+
+    .est-select:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 14px rgba(200,151,42,0.18);
+    }
+
+    .est-select option { background: var(--navy-deep); color: var(--white); }
+
+    .est-range-wrap {
+      position: relative;
+    }
+
+    .est-range {
+      width: 100%;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 5px;
+      background: rgba(200,151,42,0.18);
+      border-radius: 10px;
+      outline: none;
+      margin-top: 0.65rem;
+    }
+
+    .est-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--gold-lt);
+      cursor: pointer;
+      border: 3px solid var(--navy-deep);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+
+    .est-range::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--gold-lt);
+      cursor: pointer;
+      border: 3px solid var(--navy-deep);
+    }
+
+    .est-range-val {
+      display: block;
+      text-align: right;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--gold-pale);
+      margin-top: 0.3rem;
+    }
+
+    .est-result-box {
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .est-result-pill {
+      background: rgba(200,151,42,0.07);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1.1rem 1.4rem;
+      text-align: center;
+    }
+
+    .est-pill-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+
+    .est-pill-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--gold-pale);
+      line-height: 1;
+    }
+
+    .est-disclaimer {
+      font-size: 0.78rem;
+      color: rgba(142,168,194,0.6);
+      text-align: center;
+      margin-top: 0.8rem;
+      line-height: 1.5;
+    }
+
+    .est-cta-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .est-cta-row .btn-submit-form {
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .est-cta-row .btn-form-wa {
+      flex: 1;
+      min-width: 180px;
+    }
+
+    @media (max-width: 600px) {
+      #estimator { padding: 4rem 5vw; }
+      .estimator-wrap { padding: 1.8rem 1.2rem 1.6rem; }
+      .estimator-fields { grid-template-columns: 1fr; gap: 1.2rem; }
+      .est-result-box { grid-template-columns: 1fr; }
+    }
+
+    /* ═══════════════════════════════════════════
+       FEATURE 5 — CERTIFICATIONS & BRANDS STRIP
+    ═══════════════════════════════════════════ */
+    #certifications {
+      background: rgba(8,21,36,0.9);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 4rem 4vw;
+    }
+
+    .cert-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .cert-eyebrow {
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 2.2rem;
+      opacity: 0.7;
+    }
+
+    .cert-scroll-track {
+      display: flex;
+      gap: 1.8rem;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .cert-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 1.1rem 1.6rem;
+      background: rgba(16,38,64,0.5);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: all 0.3s ease;
+      text-align: center;
+      min-width: 110px;
+    }
+
+    .cert-badge:hover {
+      background: rgba(200,151,42,0.07);
+      border-color: var(--border-hover);
+      transform: translateY(-3px);
+    }
+
+    .cert-badge-icon {
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+
+    .cert-badge-name {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--gold-pale);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+
+    .cert-badge-sub {
+      font-size: 0.65rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    @media (max-width: 600px) {
+      #certifications { padding: 3rem 5vw; }
+      .cert-badge { min-width: 90px; padding: 0.9rem 1rem; }
+    }
+    /* ── LUXURY VISUAL POLISH & ATTRACTION ADDITIONS ── */
+    .scroll-progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, #996e14, #c8972a, #e5b858, #ffffff);
+      z-index: 10001;
+      pointer-events: none;
+      box-shadow: 0 0 12px rgba(229, 184, 88, 0.85);
+      transition: width 0.1s linear;
+    }
+
+    /* Hero Canvas Particles */
+    .hero-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.7;
+    }
+    #hero > *:not(.hero-canvas) {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Luxury Gold Cursor (Desktop Only) */
+    @media (pointer: fine) {
+      .luxury-cursor-dot {
+        position: fixed;
+        top: 0; left: 0;
+        width: 6px; height: 6px;
+        border-radius: 50%;
+        background: var(--gold-lt);
+        pointer-events: none;
+        z-index: 99999;
+        box-shadow: 0 0 8px var(--gold);
+        transform: translate(-50%, -50%);
+        transition: opacity 0.2s ease;
       }
-      .nav-logo-sub {
-        font-size: 0.48rem;
+      .luxury-cursor-ring {
+        position: fixed;
+        top: 0; left: 0;
+        width: 32px; height: 32px;
+        border: 1px solid rgba(200, 151, 42, 0.5);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 99998;
+        transform: translate(-50%, -50%);
+        transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease, background 0.25s ease, transform 0.08s ease-out;
       }
-      .nav-logo-img {
-        height: 32px;
+      .luxury-cursor-ring.active {
+        width: 48px; height: 48px;
+        border-color: rgba(229, 184, 88, 0.9);
+        background: rgba(200, 151, 42, 0.1);
+      }
+    }
+    @media (pointer: coarse) {
+      .luxury-cursor-dot, .luxury-cursor-ring { display: none !important; }
+    }
+
+    /* Button Shimmer / Sheen Animation */
+    .btn-hero-primary, .nav-cta-btn, .price-cta, .calc-wa-btn, .brochure-btn, .poster-cta-btn, .form-submit {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-hero-primary::after, .nav-cta-btn::after, .price-cta::after, .calc-wa-btn::after, .brochure-btn::after, .poster-cta-btn::after, .form-submit::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -80%;
+      width: 50%;
+      height: 200%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.32), transparent);
+      transform: rotate(25deg);
+      transition: left 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .btn-hero-primary:hover::after, .nav-cta-btn:hover::after, .price-cta:hover::after, .calc-wa-btn:hover::after, .brochure-btn:hover::after, .poster-cta-btn:hover::after, .form-submit:hover::after {
+      left: 140%;
+    }
+
+    /* Soft Glow & Hover Enhancements on Cards */
+    .svc-card, .price-card, .timeline-card, .pillar-card, .testimonial-card, .estimator-card, .contact-card, .form-card {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease !important;
+    }
+    .svc-card:hover, .price-card:hover, .testimonial-card:hover {
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 24px rgba(200, 151, 42, 0.22) !important;
+      border-color: rgba(200, 151, 42, 0.5) !important;
+    }
+
+    /* Featured pricing card breathing glow */
+    @keyframes featuredBorderPulse {
+      0%, 100% { box-shadow: 0 0 16px rgba(200, 151, 42, 0.25), inset 0 0 12px rgba(200, 151, 42, 0.08); }
+      50% { box-shadow: 0 0 32px rgba(200, 151, 42, 0.55), inset 0 0 22px rgba(200, 151, 42, 0.18); }
+    }
+    .price-card.featured {
+      animation: featuredBorderPulse 4s infinite ease-in-out;
+    }
+
+    /* Stat item hover pop */
+    .stat-item {
+      transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+    }
+    .stat-item:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-gold);
+      background: rgba(200, 151, 42, 0.08);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+    /* ── KERALA SERVICE COVERAGE & RAPID SITE VISIT ── */
+    #coverage {
+      position: relative;
+      background: radial-gradient(circle at 80% 20%, rgba(200, 151, 42, 0.06), transparent 50%),
+                  radial-gradient(circle at 20% 80%, rgba(13, 27, 42, 0.8), transparent 60%);
+      padding: 7rem 4vw;
+      border-top: 1px solid var(--border);
+    }
+
+    .coverage-layout {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 2.5rem;
+      max-width: 1240px;
+      margin: 0 auto;
+      align-items: stretch;
+    }
+
+    /* Hubs List (Left Column) */
+    .hubs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .hub-card {
+      background: rgba(13, 27, 42, 0.65);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.6rem 1.8rem;
+      backdrop-filter: blur(12px);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hub-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 4px;
+      background: transparent;
+      transition: background 0.3s ease;
+    }
+
+    .hub-card:hover, .hub-card.active {
+      border-color: var(--gold);
+      background: rgba(20, 38, 58, 0.85);
+      transform: translateX(6px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(200, 151, 42, 0.15);
+    }
+
+    .hub-card.active::before {
+      background: linear-gradient(180deg, var(--gold-lt), var(--gold));
+    }
+
+    .hub-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.6rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .hub-title {
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .hub-badge {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.28rem 0.75rem;
+      border-radius: 20px;
+      background: rgba(200, 151, 42, 0.12);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-pale);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .hub-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #25D366;
+      box-shadow: 0 0 6px #25D366;
+    }
+
+    .hub-districts {
+      font-size: 0.9rem;
+      color: var(--gold-lt);
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .hub-desc {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin-bottom: 0.8rem;
+    }
+
+    .hub-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .hub-tag {
+      font-size: 0.74rem;
+      padding: 0.2rem 0.55rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      color: var(--text-dim);
+    }
+
+    /* Map & Guarantee Card (Right Column) */
+    .map-column {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .map-card {
+      background: rgba(8, 21, 36, 0.75);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 2rem 1.8rem;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 380px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+    }
+
+    .map-kerala-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 340px;
+      height: 380px;
+      margin: 0 auto;
+    }
+
+    .map-svg-silhouette {
+      width: 100%;
+      height: 100%;
+      fill: none;
+      stroke: rgba(200, 151, 42, 0.35);
+      stroke-width: 1.5;
+      stroke-dasharray: 4 2;
+    }
+
+    .map-pin {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      z-index: 10;
+      transition: all 0.3s ease;
+    }
+
+    .map-pin-dot {
+      width: 12px;
+      height: 12px;
+      background: var(--gold-lt);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--gold);
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .map-pin::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 1.5px solid var(--gold);
+      animation: pinPulse 2.4s infinite;
+      pointer-events: none;
+    }
+
+    @keyframes pinPulse {
+      0% { transform: scale(0.8); opacity: 0.9; }
+      100% { transform: scale(2.2); opacity: 0; }
+    }
+
+    .map-pin:hover .map-pin-dot,
+    .map-pin.active .map-pin-dot {
+      transform: scale(1.4);
+      background: #FFFFFF;
+      box-shadow: 0 0 18px var(--gold-lt), 0 0 28px rgba(200, 151, 42, 0.8);
+    }
+
+    .map-pin-label {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(8, 21, 36, 0.92);
+      border: 1px solid var(--border-gold);
+      color: var(--white);
+      padding: 0.25rem 0.6rem;
+      border-radius: 14px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      white-space: nowrap;
+      pointer-events: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      letter-spacing: 0.04em;
+    }
+
+    /* Rapid Audit Commitment Box */
+    .audit-guarantee-card {
+      background: linear-gradient(145deg, rgba(20, 38, 58, 0.9), rgba(13, 27, 42, 0.85));
+      border: 1px solid var(--border-gold);
+      border-radius: var(--radius-md);
+      padding: 1.8rem 2rem;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+    }
+
+    .audit-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45rem;
+      color: var(--white);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .audit-sub {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 1.2rem;
+    }
+
+    .audit-checklist {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1.5rem 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+    }
+
+    .audit-check-item {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .audit-check-item span {
+      color: var(--gold-lt);
+      font-size: 0.9rem;
+    }
+
+    .btn-schedule-visit {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7rem;
+      width: 100%;
+      padding: 0.95rem 1.4rem;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold) 50%, var(--gold-lt));
+      color: #081524;
+      font-weight: 700;
+      font-size: 0.92rem;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      box-shadow: 0 6px 20px var(--gold-glow);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .btn-schedule-visit:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(200, 151, 42, 0.5);
+    }
+
+    .btn-schedule-visit svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    @media (max-width: 992px) {
+      .coverage-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .audit-checklist {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -2056,6 +3357,12 @@
 
 <body>
 
+  <!-- SCROLL PROGRESS BAR -->
+  <div id="scrollProgress" class="scroll-progress-bar"></div>
+
+  <!-- LUXURY CUSTOM CURSOR (DESKTOP) -->
+  <div class="luxury-cursor-dot" id="cursorDot"></div>
+  <div class="luxury-cursor-ring" id="cursorRing"></div>
   <div class="ambient-glow"></div>
 
   <!-- NAVIGATION -->
@@ -2071,8 +3378,8 @@
     <ul class="nav-links">
       <li><a href="#services">Services</a></li>
       <li><a href="#craftsmanship">Craftsmanship</a></li>
-      <li><a href="#about">About</a></li>
       <li><a href="#gallery">Projects</a></li>
+      <li><a href="#about">About</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
 
@@ -2096,8 +3403,8 @@
     <ul class="mobile-menu-links">
       <li><a href="#services" class="mobile-nav-link">Services</a></li>
       <li><a href="#craftsmanship" class="mobile-nav-link">Craftsmanship</a></li>
-      <li><a href="#about" class="mobile-nav-link">About</a></li>
       <li><a href="#gallery" class="mobile-nav-link">Projects</a></li>
+      <li><a href="#about" class="mobile-nav-link">About</a></li>
       <li><a href="#contact" class="mobile-nav-link">Contact</a></li>
     </ul>
     <div class="mobile-menu-actions">
@@ -2111,6 +3418,8 @@
 
   <!-- HERO SECTION -->
   <header id="hero">
+    <!-- HERO LUXURY STAR/PARTICLE CANVAS -->
+    <canvas id="heroCanvas" class="hero-canvas"></canvas>
     <div class="hero-badge">
       <span class="hero-badge-dot"></span>
       Architectural Surface &amp; Flooring Studio
@@ -2137,19 +3446,19 @@
     <!-- STATS METRICS -->
     <div class="hero-stats">
       <div class="stat-item">
-        <span class="stat-num">12+</span>
+        <span class="stat-num" data-target="4" data-suffix="+">4+</span>
         <span class="stat-label">Years of Excellence</span>
       </div>
       <div class="stat-item">
-        <span class="stat-num">500+</span>
+        <span class="stat-num" data-target="30" data-suffix="+">30+</span>
         <span class="stat-label">Projects Completed</span>
       </div>
       <div class="stat-item">
-        <span class="stat-num">100%</span>
+        <span class="stat-num" data-target="100" data-suffix="%">100%</span>
         <span class="stat-label">Moisture Compliance</span>
       </div>
       <div class="stat-item">
-        <span class="stat-num">0%</span>
+        <span class="stat-num" data-target="0" data-suffix="%">0%</span>
         <span class="stat-label">Termite Recurrence</span>
       </div>
     </div>
@@ -2417,10 +3726,129 @@
       </div>
     </div>
   </section>
+  <!-- ═══════════════════════════════════════════
+       PRICING / STARTING RATES
+  ═══════════════════════════════════════════ -->
+  <section id="pricing">
+    <div class="sec-header">
+      <span class="sec-eyebrow">Transparent Pricing</span>
+      <h2 class="sec-title">Starting <em>Rate Guide</em></h2>
+      <p class="sec-sub">Indicative per sq ft rates to help you budget your project. Final quote after on-site laser assessment.</p>
+    </div>
+
+    <div class="pricing-grid">
+
+      <div class="price-card">
+        <div class="price-icon">🪵</div>
+        <h3 class="price-service-name">Solid &amp; Engineered Hardwood</h3>
+        <div class="price-range">
+          <span class="price-from">From</span>
+          <span class="price-num">₹260</span>
+          <span class="price-unit">/ sq ft</span>
+        </div>
+        <ul class="price-features">
+          <li>European Oak, Teak &amp; Walnut species</li>
+          <li>Chevron, herringbone &amp; plank patterns</li>
+          <li>UV-cured hardwax oil finish</li>
+          <li>Acoustic underlayment included</li>
+        </ul>
+        <a href="#contact" class="price-cta">Get Exact Quote →</a>
+      </div>
+
+      <div class="price-card featured">
+        <div class="price-badge">Most Popular</div>
+        <div class="price-icon">✨</div>
+        <h3 class="price-service-name">Seamless Epoxy &amp; Polyurethane</h3>
+        <div class="price-range">
+          <span class="price-from">From</span>
+          <span class="price-num">₹70</span>
+          <span class="price-unit">/ sq ft</span>
+        </div>
+        <ul class="price-features">
+          <li>Mirror finish, metallic &amp; matte options</li>
+          <li>Joint-free continuous surface</li>
+          <li>Chemical &amp; abrasion resistant</li>
+          <li>Food-grade &amp; anti-microbial variants</li>
+        </ul>
+        <a href="#contact" class="price-cta">Get Exact Quote →</a>
+      </div>
+
+      <div class="price-card">
+        <div class="price-icon">🏛️</div>
+        <h3 class="price-service-name">Rigid Core SPC &amp; Luxury Vinyl</h3>
+        <div class="price-range">
+          <span class="price-from">From</span>
+          <span class="price-num">₹95</span>
+          <span class="price-unit">/ sq ft</span>
+        </div>
+        <ul class="price-features">
+          <li>100% waterproof stone composite</li>
+          <li>Realistic wood &amp; stone textures</li>
+          <li>Quick click-lock installation</li>
+          <li>IXPE sound-dampening layer</li>
+        </ul>
+        <a href="#contact" class="price-cta">Get Exact Quote →</a>
+      </div>
+
+      <div class="price-card">
+        <div class="price-icon">🛡️</div>
+        <h3 class="price-service-name">Subfloor Waterproofing</h3>
+        <div class="price-range">
+          <span class="price-from">From</span>
+          <span class="price-num">₹55</span>
+          <span class="price-unit">/ sq ft</span>
+        </div>
+        <ul class="price-features">
+          <li>Liquid polyurethane membrane</li>
+          <li>Crystalline chemical deep barrier</li>
+          <li>Joint sealing &amp; crack injection</li>
+          <li>10-year anti-leak warranty</li>
+        </ul>
+        <a href="#contact" class="price-cta">Get Exact Quote →</a>
+      </div>
+
+      <div class="price-card">
+        <div class="price-icon">💎</div>
+        <h3 class="price-service-name">Marble &amp; Terrazzo Restoration</h3>
+        <div class="price-range">
+          <span class="price-from">From</span>
+          <span class="price-num">₹45</span>
+          <span class="price-unit">/ sq ft</span>
+        </div>
+        <ul class="price-features">
+          <li>Diamond abrasive multi-stage grind</li>
+          <li>Nano-densification &amp; crystallization</li>
+          <li>Hydrophobic nano-sealing</li>
+          <li>Mirror reflectivity finish</li>
+        </ul>
+        <a href="#contact" class="price-cta">Get Exact Quote →</a>
+      </div>
+
+      <div class="price-card">
+        <div class="price-icon">🐜</div>
+        <h3 class="price-service-name">Termite Defense Treatment</h3>
+        <div class="price-range">
+          <span class="price-from">From</span>
+          <span class="price-num">₹14</span>
+          <span class="price-unit">/ sq ft</span>
+        </div>
+        <ul class="price-features">
+          <li>IS:6313 certified barrier system</li>
+          <li>Pre &amp; post-construction treatment</li>
+          <li>Non-repellent colony chemicals</li>
+          <li>Multi-year zero-infestation warranty</li>
+        </ul>
+        <a href="#contact" class="price-cta">Get Exact Quote →</a>
+      </div>
+
+    </div>
+
+    <p style="text-align:center; font-size:0.82rem; color:rgba(142,168,194,0.6); margin-top:2rem;">* All rates are indicative starting prices (per sq ft, excl. GST &amp; site preparation). Final quote after on-site laser measurement.</p>
+  </section>
+
 
   <!-- CRAFTSMANSHIP & PROTOCOLS -->
-  <section id="craftsmanship">
-    <div class="sec-header">
+  <section id="craftsmanship">    <div class="sec-header">
       <span class="sec-eyebrow">The Levanto Standard</span>
       <h2 class="sec-title">Architectural <em>Protocol</em></h2>
       <p class="sec-sub">Every project adheres to a four-stage engineering methodology ensuring moisture equilibrium and surface longevity.</p>
@@ -2579,6 +4007,61 @@
     </div>
   </section>
 
+  <!-- ═══════════════════════════════════════════
+       BEFORE / AFTER TRANSFORMATION SLIDER
+  ═══════════════════════════════════════════ -->
+  <section id="before-after">
+    <div class="sec-header">
+      <span class="sec-eyebrow">Transformations</span>
+      <h2 class="sec-title">Before &amp; <em>After</em></h2>
+      <p class="sec-sub">Drag the slider on each card to reveal the stunning transformation our installations deliver.</p>
+    </div>
+
+    <div class="ba-grid">
+
+      <!-- Card 1: Hardwood Floor -->
+      <div class="ba-card" data-ba>
+        <div class="ba-after-layer" style="background-image: url('https://images.unsplash.com/photo-1562663474-6cbb3eaa4d14?w=800&q=80&fit=crop');"></div>
+        <div class="ba-before-layer" style="background-image: url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80&fit=crop');"></div>
+        <div class="ba-divider"><div class="ba-handle">⇔</div></div>
+        <span class="ba-label-before">Before</span>
+        <span class="ba-label-after">After</span>
+        <div class="ba-caption">
+          <h4>Bare Concrete → Oak Chevron Parquet</h4>
+          <span>Villa, Kochi · 3,200 sq ft</span>
+        </div>
+      </div>
+
+      <!-- Card 2: Epoxy Floor -->
+      <div class="ba-card" data-ba>
+        <div class="ba-after-layer" style="background-image: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&fit=crop');"></div>
+        <div class="ba-before-layer" style="background-image: url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80&fit=crop&sat=-100&bri=-20');"></div>
+        <div class="ba-divider"><div class="ba-handle">⇔</div></div>
+        <span class="ba-label-before">Before</span>
+        <span class="ba-label-after">After</span>
+        <div class="ba-caption">
+          <h4>Industrial Slab → Metallic Mirror Epoxy</h4>
+          <span>Showroom, Bengaluru · 5,800 sq ft</span>
+        </div>
+      </div>
+
+      <!-- Card 3: Marble Restoration -->
+      <div class="ba-card" data-ba>
+        <div class="ba-after-layer" style="background-image: url('https://images.unsplash.com/photo-1615873968403-89e068629265?w=800&q=80&fit=crop');"></div>
+        <div class="ba-before-layer" style="background-image: url('https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?w=800&q=80&fit=crop');"></div>
+        <div class="ba-divider"><div class="ba-handle">⇔</div></div>
+        <span class="ba-label-before">Before</span>
+        <span class="ba-label-after">After</span>
+        <div class="ba-caption">
+          <h4>Dull Marble → Diamond-Polished Mirror Finish</h4>
+          <span>Heritage Bungalow, Calicut</span>
+        </div>
+      </div>
+
+    </div>
+    <p class="ba-hint">👆 Drag the gold divider left &amp; right to compare</p>
+  </section>
+
   <!-- TESTIMONIALS -->
   <section id="testimonials">
     <div class="sec-header">
@@ -2650,6 +4133,311 @@
     </div>
   </section>
 
+  <!-- ═══════════════════════════════════════════
+       CERTIFICATIONS & PARTNER BRANDS STRIP
+  ═══════════════════════════════════════════ -->
+  <section id="certifications">
+    <div class="cert-inner">
+      <p class="cert-eyebrow">Certified Standards &amp; Trusted Material Partners</p>
+      <div class="cert-scroll-track">
+
+        <div class="cert-badge">
+          <div class="cert-badge-icon">🏛️</div>
+          <div class="cert-badge-name">IS:6313</div>
+          <div class="cert-badge-sub">Anti-Termite Certified</div>
+        </div>
+
+        <div class="cert-badge">
+          <div class="cert-badge-icon">🧪</div>
+          <div class="cert-badge-name">BONA</div>
+          <div class="cert-badge-sub">Hardwood Finish Partner</div>
+        </div>
+
+        <div class="cert-badge">
+          <div class="cert-badge-icon">🛡️</div>
+          <div class="cert-badge-name">Remmers</div>
+          <div class="cert-badge-sub">Waterproofing Systems</div>
+        </div>
+
+        <div class="cert-badge">
+          <div class="cert-badge-icon">🔬</div>
+          <div class="cert-badge-name">BASF</div>
+          <div class="cert-badge-sub">Epoxy &amp; Sealant Materials</div>
+        </div>
+
+        <div class="cert-badge">
+          <div class="cert-badge-icon">⚗️</div>
+          <div class="cert-badge-name">Pidilite</div>
+          <div class="cert-badge-sub">Adhesive Technology</div>
+        </div>
+
+        <div class="cert-badge">
+          <div class="cert-badge-icon">🌿</div>
+          <div class="cert-badge-name">VOC-Free</div>
+          <div class="cert-badge-sub">Eco-Safe Finishes</div>
+        </div>
+
+        <div class="cert-badge">
+          <div class="cert-badge-icon">✅</div>
+          <div class="cert-badge-name">ISO 9001</div>
+          <div class="cert-badge-sub">Quality Management</div>
+        </div>
+
+        <div class="cert-badge">
+          <div class="cert-badge-icon">🏆</div>
+          <div class="cert-badge-name">4+ Years</div>
+          <div class="cert-badge-sub">30+ Projects Handed Over</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!-- BROCHURE DOWNLOAD BANNER -->
+  <div class="brochure-banner">
+    <div class="brochure-inner">
+      <span class="brochure-eyebrow">Free Resource</span>
+      <h2 class="brochure-title">Download Our <em>Project Portfolio</em></h2>
+      <p class="brochure-sub">Get our full 2026 services brochure with technical specifications, project photos, and pricing guidance — delivered straight to WhatsApp.</p>
+      <form class="brochure-form" onsubmit="handleBrochureRequest(event)">
+        <input type="tel" class="brochure-input" id="brochurePhone" placeholder="Your WhatsApp number (+91...)" required />
+        <button type="submit" class="brochure-btn">📄 Send Me Brochure</button>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════
+       COST ESTIMATOR
+  ═══════════════════════════════════════════ -->
+  <section id="estimator">
+    <div class="sec-header">
+      <span class="sec-eyebrow">Instant Estimate</span>
+      <h2 class="sec-title">Get a Quick <em>Cost Estimate</em></h2>
+      <p class="sec-sub">Select your flooring type, finish quality, and project area to get an indicative price range instantly.</p>
+    </div>
+
+    <div class="estimator-wrap">
+      <div class="estimator-fields">
+
+        <div>
+          <label class="est-label" for="estType">Flooring / Service Type</label>
+          <select class="est-select" id="estType" onchange="calcEstimate()">
+            <option value="hardwood">Solid &amp; Engineered Hardwood</option>
+            <option value="spc">SPC / Luxury Vinyl (LVT)</option>
+            <option value="epoxy">Seamless Epoxy Flooring</option>
+            <option value="marble">Marble Polishing &amp; Restoration</option>
+            <option value="waterproofing">Subfloor Waterproofing</option>
+            <option value="termite">Termite Defense Treatment</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="est-label" for="estGrade">Finish / Grade</label>
+          <select class="est-select" id="estGrade" onchange="calcEstimate()">
+            <option value="standard">Standard</option>
+            <option value="premium" selected>Premium</option>
+            <option value="luxury">Luxury / Bespoke</option>
+          </select>
+        </div>
+
+        <div style="grid-column: 1 / -1;">
+          <label class="est-label">Project Area: <span id="estAreaVal" style="color:var(--gold-lt); font-size:1rem; font-family:'Cormorant Garamond',serif; font-weight:700;">500 sq ft</span></label>
+          <input type="range" class="est-range" id="estArea" min="100" max="10000" step="50" value="500" oninput="calcEstimate()" />
+        </div>
+
+      </div>
+
+      <div class="est-result-box">
+        <div class="est-result-pill">
+          <span class="est-pill-label">Estimated Minimum</span>
+          <span class="est-pill-val" id="estMin">₹1,75,000</span>
+        </div>
+        <div class="est-result-pill">
+          <span class="est-pill-label">Estimated Maximum</span>
+          <span class="est-pill-val" id="estMax">₹2,25,000</span>
+        </div>
+      </div>
+
+      <p class="est-disclaimer">* Indicative estimate only (excludes GST and substrate repairs). Connect for exact on-site laser evaluation.</p>
+
+      <div class="est-cta-row" style="margin-top:1.6rem;">
+        <button class="btn-submit-form" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})" type="button">
+          Get Exact Quotation →
+        </button>
+        <a id="estWaLink" href="https://wa.me/919633640064?text=Hello%20Levanto%2C%20I%20need%20a%20quote%20for%20Hardwood%20flooring%20for%20500%20sq%20ft." target="_blank" class="btn-form-wa">
+          <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+          Send Spec via WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+    <!-- ═══════════════════════════════════════════
+       KERALA SERVICE COVERAGE & RAPID SITE VISIT
+  ═══════════════════════════════════════════ -->
+  <section id="coverage">
+    <div class="sec-header">
+      <span class="sec-eyebrow">Central Hub in Malappuram · Statewide &amp; South India Reach</span>
+      <h2 class="sec-title">Headquartered in Edavanna, <em>Serving All Kerala &amp; South India</em></h2>
+      <p class="sec-sub">Our central studio, warehouse, and technical workshop are based in Edavanna, Malappuram. From this single centralized hub, our mobile diagnostic and installation crews deliver on-site assessments and execution across all 14 Kerala districts and South India.</p>
+    </div>
+
+    <div class="coverage-layout">
+
+      <!-- LEFT: REGIONAL HUBS LIST -->
+      <div class="hubs-list" id="hubsList">
+
+        <!-- Central Studio & HQ -->
+        <div class="hub-card active" data-hub="hq">
+          <div class="hub-header">
+            <div class="hub-title">
+              <span>🏛️ Edavanna, Malappuram (Central HQ &amp; Studio)</span>
+            </div>
+            <span class="hub-badge"><span class="hub-badge-dot"></span> Central Office</span>
+          </div>
+          <div class="hub-districts">Malappuram · Kozhikode · Kannur · Wayanad · Palakkad</div>
+          <p class="hub-desc">Our sole registered headquarters, experience studio, material storage warehouse, and precision woodworking center. Direct client meetings, sample inspections, and project engineering take place here.</p>
+          <div class="hub-tags">
+            <span class="hub-tag">Edavanna HQ</span>
+            <span class="hub-tag">Manjeri &amp; Nilambur</span>
+            <span class="hub-tag">Calicut Metro</span>
+            <span class="hub-tag">Kannur &amp; Thalassery</span>
+            <span class="hub-tag">Wayanad Resorts</span>
+          </div>
+        </div>
+
+        <!-- Central Kerala Deployment -->
+        <div class="hub-card" data-hub="central">
+          <div class="hub-header">
+            <div class="hub-title">
+              <span>🏙️ Central Kerala Mobile Crew</span>
+            </div>
+            <span class="hub-badge"><span class="hub-badge-dot"></span> 24h On-Site Audit</span>
+          </div>
+          <div class="hub-districts">Ernakulam (Kochi) · Thrissur · Kottayam · Alappuzha</div>
+          <p class="hub-desc">Mobile crew dispatched directly from Edavanna for luxury waterfront residences, penthouses, high-rise apartments, and commercial projects across Kochi and Thrissur.</p>
+          <div class="hub-tags">
+            <span class="hub-tag">Marine Drive &amp; Panampilly</span>
+            <span class="hub-tag">Kakkanad Infopark</span>
+            <span class="hub-tag">Thrissur Cultural Hub</span>
+            <span class="hub-tag">Aluva &amp; Nedumbassery</span>
+          </div>
+        </div>
+
+        <!-- South Kerala Deployment -->
+        <div class="hub-card" data-hub="south">
+          <div class="hub-header">
+            <div class="hub-title">
+              <span>🌴 South Kerala &amp; Coastal Crew</span>
+            </div>
+            <span class="hub-badge"><span class="hub-badge-dot"></span> 24h–48h On-Site Audit</span>
+          </div>
+          <div class="hub-districts">Thiruvananthapuram · Kollam · Pathanamthitta · Idukki</div>
+          <p class="hub-desc">Specialized on-site teams executing coastal humidity barrier treatments, crystalline subfloor waterproofing, heritage marble restoration, and 100% waterproof SPC installations.</p>
+          <div class="hub-tags">
+            <span class="hub-tag">Kowdiar &amp; Sasthamangalam</span>
+            <span class="hub-tag">Technopark Phase I–IV</span>
+            <span class="hub-tag">Ashtamudi Waterfront</span>
+            <span class="hub-tag">Thiruvalla Estates</span>
+          </div>
+        </div>
+
+        <!-- Pan-South India & GCC -->
+        <div class="hub-card" data-hub="southindia">
+          <div class="hub-header">
+            <div class="hub-title">
+              <span>✈️ Pan-South India &amp; GCC Projects</span>
+            </div>
+            <span class="hub-badge"><span class="hub-badge-dot"></span> Interstate Execution</span>
+          </div>
+          <div class="hub-districts">Bengaluru · Chennai · Coimbatore · Mangaluru · UAE · Qatar</div>
+          <p class="hub-desc">Turnkey surface contracting for luxury residences, penthouses, and commercial spaces across South India and GCC, orchestrated and installed directly by our senior team.</p>
+          <div class="hub-tags">
+            <span class="hub-tag">Bengaluru Penthouses</span>
+            <span class="hub-tag">Coimbatore Villas</span>
+            <span class="hub-tag">Chennai Commercial</span>
+            <span class="hub-tag">Dubai &amp; Doha Turnkey</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: INTERACTIVE MAP & ON-SITE AUDIT GUARANTEE -->
+      <div class="map-column">
+
+        <!-- Stylized Kerala Architectural Map with Malappuram Edavanna HQ Pin -->
+        <div class="map-card">
+          <div class="map-kerala-wrap" id="keralaMapWrap">
+            <!-- Stylized Kerala Silhouette SVG -->
+            <svg class="map-svg-silhouette" viewBox="0 0 300 420" xmlns="http://www.w3.org/2000/svg">
+              <path d="M95,20 C105,40 120,65 130,95 C140,125 155,150 165,185 C175,220 185,255 195,290 C205,325 215,360 220,395 C205,398 185,385 170,355 C155,325 140,290 130,250 C120,210 105,170 95,130 C85,90 75,50 95,20 Z" />
+              <!-- Subtle Grid / Contour Lines -->
+              <line x1="20" y1="100" x2="280" y2="100" stroke="rgba(200,151,42,0.1)" stroke-width="1" />
+              <line x1="20" y1="200" x2="280" y2="200" stroke="rgba(200,151,42,0.1)" stroke-width="1" />
+              <line x1="20" y1="300" x2="280" y2="300" stroke="rgba(200,151,42,0.1)" stroke-width="1" />
+              <text x="200" y="50" fill="rgba(200,151,42,0.3)" font-size="10" font-family="sans-serif" letter-spacing="2">KERALA &amp; S. INDIA</text>
+              <text x="200" y="65" fill="rgba(142,168,194,0.3)" font-size="8" font-family="sans-serif">HQ: Edavanna, Malappuram</text>
+            </svg>
+
+            <!-- 1. Kannur -->
+            <div class="map-pin" style="top: 22%; left: 36%;" data-hub="hq" title="Kannur Service Area">
+              <div class="map-pin-dot"></div>
+              <span class="map-pin-label">Kannur</span>
+            </div>
+
+            <!-- 2. Kozhikode (Calicut) -->
+            <div class="map-pin" style="top: 33%; left: 44%;" data-hub="hq" title="Kozhikode Service Area">
+              <div class="map-pin-dot"></div>
+              <span class="map-pin-label">Kozhikode</span>
+            </div>
+
+            <!-- 3. CENTRAL HQ: EDAVANNA, MALAPPURAM -->
+            <div class="map-pin active" style="top: 41%; left: 51%;" data-hub="hq" title="Edavanna, Malappuram (Central HQ & Experience Center)">
+              <div class="map-pin-dot" style="background:#FFFFFF; box-shadow:0 0 16px var(--gold-lt);"></div>
+              <span class="map-pin-label" style="border-color: var(--gold); color: var(--gold-pale); font-weight:700; background: rgba(8,21,36,0.98);">Edavanna HQ ★</span>
+            </div>
+
+            <!-- 4. Thrissur -->
+            <div class="map-pin" style="top: 50%; left: 54%;" data-hub="central" title="Thrissur Service Area">
+              <div class="map-pin-dot"></div>
+              <span class="map-pin-label">Thrissur</span>
+            </div>
+
+            <!-- 5. Kochi / Ernakulam -->
+            <div class="map-pin" style="top: 59%; left: 58%;" data-hub="central" title="Kochi & Central Service Area">
+              <div class="map-pin-dot"></div>
+              <span class="map-pin-label">Kochi</span>
+            </div>
+
+            <!-- 6. Thiruvananthapuram -->
+            <div class="map-pin" style="top: 86%; left: 74%;" data-hub="south" title="Trivandrum South Service Area">
+              <div class="map-pin-dot"></div>
+              <span class="map-pin-label">Trivandrum</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rapid On-Site Audit Commitment Card -->
+        <div class="audit-guarantee-card">
+          <h3 class="audit-title">📐 Mobile Engineering &amp; Audit Van</h3>
+          <p class="audit-sub">Dispatched directly from our Edavanna (Malappuram) hub across Kerala &amp; South India with calibrated diagnostic gear to survey your site before quote finalization.</p>
+          <ul class="audit-checklist">
+            <li class="audit-check-item"><span>✓</span> Digital Concrete Moisture (ASTM F2170)</li>
+            <li class="audit-check-item"><span>✓</span> Leica 3D Laser Floor Level Scan</li>
+            <li class="audit-check-item"><span>✓</span> Physical Hardwood &amp; Epoxy Samples</li>
+            <li class="audit-check-item"><span>✓</span> Same-Day BOQ &amp; Cost Estimation</li>
+          </ul>
+          <a id="coverageWaBtn" href="https://wa.me/919633640064?text=Hello%20Levanto%20Flooring%2C%20I%20would%20like%20to%20schedule%20an%20on-site%20flooring%20assessment%20/%20visit%20your%20Edavanna%20(Malappuram)%20Studio.%20Please%20share%20details." target="_blank" class="btn-schedule-visit">
+            <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            <span>Book On-Site Visit In Your Area</span>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
   <!-- CONTACT & ENQUIRY -->
   <section id="contact">
     <div class="sec-header">
@@ -2694,8 +4482,9 @@
         <div class="c-card">
           <div class="c-icon-circle">📍</div>
           <div class="c-card-texts">
-            <span class="c-card-lbl">Operations Studio</span>
-            <span class="c-card-val">Kerala &amp; South India Projects</span>
+            <span class="c-card-lbl">Central Office &amp; Experience Studio</span>
+            <span class="c-card-val">Edavanna, Malappuram, Kerala</span>
+            <span style="font-size:0.75rem; color:var(--gold-lt); display:block; margin-top:2px;">Serving All Kerala &amp; South India</span>
           </div>
         </div>
       </div>
@@ -2748,6 +4537,77 @@
       </div>
     </div>
   </section>
+  <!-- ═══════════════════════════════════════════
+       FAQ SECTION
+  ═══════════════════════════════════════════ -->
+  <section id="faq">
+    <div class="sec-header">
+      <span class="sec-eyebrow">Common Questions</span>
+      <h2 class="sec-title">Frequently <em>Asked</em></h2>
+      <p class="sec-sub">Answers to the questions we hear most from homeowners, architects, and project directors.</p>
+    </div>
+
+    <div class="faq-wrap">
+
+      <div class="faq-item open">
+        <div class="faq-q">
+          How long does a typical hardwood floor installation take?
+          <span class="faq-chevron">▾</span>
+        </div>
+        <div class="faq-a">For a standard 1,500–2,000 sq ft residence, hardwood installation typically takes 4–7 working days, including our mandatory moisture and subfloor audit, diamond grinding, and two-stage finishing. Larger projects or intricate parquet patterns such as herringbone or chevron may require 10–14 days.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          Do you provide a warranty on waterproofing work?
+          <span class="faq-chevron">▾</span>
+        </div>
+        <div class="faq-a">Yes. Our standard waterproofing systems carry a 10-year anti-leak performance warranty. Premium crystalline barrier systems and polyurethane liquid membranes are covered by written documentation that includes direct technical accountability — not through a third-party insurer.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          Can epoxy flooring be installed over existing tiles or concrete?
+          <span class="faq-chevron">▾</span>
+        </div>
+        <div class="faq-a">In most cases, yes. Our team performs a substrate assessment to check for tile adhesion, moisture levels, and surface flatness. Existing tiles may need to be removed if there is moisture ingress or de-bonding. Concrete surfaces require diamond grinding to achieve the sub-millimeter profile needed for a flawless epoxy bond.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          What is the minimum area for a site visit / consultation?
+          <span class="faq-chevron">▾</span>
+        </div>
+        <div class="faq-a">We welcome all project sizes. There is no minimum sq ft requirement for a site visit. We service single-room renovations, full-villa flooring, and large-scale commercial installations. Contact us via the form or WhatsApp and our team will schedule an assessment at no charge.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          Is SPC / Luxury Vinyl suitable for Kerala's humid climate?
+          <span class="faq-chevron">▾</span>
+        </div>
+        <div class="faq-a">Absolutely — SPC (Stone Plastic Composite) is one of our top recommendations for Kerala specifically because of its 100% waterproof rigid core. Unlike traditional hardwood, SPC will not expand, warp, or cup in high-humidity environments. The IXPE foam base provides additional thermal comfort and sound dampening ideal for concrete slab construction common in Kerala homes.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          Do you handle both pre-construction and post-construction termite treatment?
+          <span class="faq-chevron">▾</span>
+        </div>
+        <div class="faq-a">Yes, we provide both. Pre-construction treatment involves chemical barrier application to soil and foundation during the slab stage — far more effective and economical. Post-construction treatment uses drilling, injection, and reticulation piping systems to create barriers around existing structures. Both are IS:6313 compliant.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">
+          How do I maintain my epoxy or hardwood floor after installation?
+          <span class="faq-chevron">▾</span>
+        </div>
+        <div class="faq-a">Epoxy floors require only damp mopping with a neutral pH cleaner — avoid acid or bleach-based products. Hardwood floors finished with UV-cured hardwax oil should be cleaned with a recommended wood soap and re-oiled every 2–4 years depending on traffic. We provide a complete care kit and printed maintenance guide with every project handover.</div>
+      </div>
+
+    </div>
+  </section>
+
 
   <!-- FOOTER -->
   <footer>
@@ -2769,9 +4629,34 @@
       <li><a href="/login">Admin</a></li>
     </ul>
   </footer>
+  <!-- ENHANCED WHATSAPP CHAT POPUP -->
+  <div class="wa-chat-popup" id="waChatPopup">
+    <div class="wa-popup-header">
+      <div class="wa-popup-avatar">L</div>
+      <div>
+        <div class="wa-popup-name">Levanto Flooring</div>
+        <div class="wa-popup-status">🟢 Online — replies within minutes</div>
+      </div>
+      <button class="wa-popup-close" id="waPopupClose" aria-label="Close Chat">✕</button>
+    </div>
+    <div class="wa-popup-body">
+      <div class="wa-popup-bubble">
+        Hello! 👋 Looking for premium architectural flooring, epoxy, or waterproofing solutions for your project? Let's discuss your specs!
+        <span style="display:block; font-size:0.68rem; color:var(--text-muted); margin-top:0.35rem; text-align:right;">Just now</span>
+      </div>
+    </div>
+    <div class="wa-popup-footer">
+      <a href="https://wa.me/919633640064?text=Hello%20Levanto%20Flooring%2C%20I%20have%20an%20enquiry%20regarding%20flooring%20solutions." target="_blank" class="wa-popup-cta">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+        Start WhatsApp Chat
+      </a>
+    </div>
+  </div>
+
 
   <!-- FLOATING WHATSAPP BUTTON -->
   <a href="https://wa.me/919633640064?text=Hello%20Levanto%20Flooring%2C%20I%20have%20an%20enquiry%20regarding%20flooring%20solutions." target="_blank" class="wa-float-btn" aria-label="Chat on WhatsApp">
+    <span class="wa-ripple-ring"></span>
     <span class="wa-tooltip">Chat with us on WhatsApp</span>
     <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
   </a>
@@ -3046,6 +4931,408 @@
         if (window.innerWidth > 992) closeMenu();
       });
     })();
+
+    // ── ANIMATED NUMBER COUNTERS ──
+    (function initStatCounters() {
+      const stats = document.querySelectorAll('.stat-num[data-target]');
+      let started = false;
+
+      function runCounters() {
+        stats.forEach(counter => {
+          const target = parseInt(counter.getAttribute('data-target'), 10);
+          const suffix = counter.getAttribute('data-suffix') || '';
+          if (isNaN(target)) return;
+          if (target === 0) {
+            counter.textContent = '0' + suffix;
+            return;
+          }
+          const duration = 1800;
+          const startTime = performance.now();
+
+          function update(now) {
+            const progress = Math.min((now - startTime) / duration, 1);
+            // Ease out quad
+            const ease = 1 - (1 - progress) * (1 - progress);
+            const current = Math.floor(ease * target);
+            counter.textContent = current + suffix;
+            if (progress < 1) {
+              requestAnimationFrame(update);
+            } else {
+              counter.textContent = target + suffix;
+            }
+          }
+          requestAnimationFrame(update);
+        });
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !started) {
+            started = true;
+            runCounters();
+          }
+        });
+      }, { threshold: 0.3 });
+
+      const statsBar = document.querySelector('.hero-stats');
+      if (statsBar) observer.observe(statsBar);
+    })();
+
+    // ── BEFORE / AFTER INTERACTIVE SLIDER ──
+    (function initBeforeAfter() {
+      const cards = document.querySelectorAll('.ba-card[data-ba]');
+
+      cards.forEach(card => {
+        const beforeLayer = card.querySelector('.ba-before-layer');
+        const divider = card.querySelector('.ba-divider');
+        if (!beforeLayer || !divider) return;
+
+        let isDown = false;
+
+        function setPos(clientX) {
+          const rect = card.getBoundingClientRect();
+          let x = clientX - rect.left;
+          x = Math.max(0, Math.min(x, rect.width));
+          const pct = (x / rect.width) * 100;
+          beforeLayer.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+          divider.style.left = `${pct}%`;
+        }
+
+        card.addEventListener('pointerdown', (e) => {
+          isDown = true;
+          card.setPointerCapture(e.pointerId);
+          setPos(e.clientX);
+        });
+
+        card.addEventListener('pointermove', (e) => {
+          if (!isDown) return;
+          setPos(e.clientX);
+        });
+
+        const stop = (e) => {
+          if (isDown) {
+            isDown = false;
+            try { card.releasePointerCapture(e.pointerId); } catch (_) {}
+          }
+        };
+
+        card.addEventListener('pointerup', stop);
+        card.addEventListener('pointercancel', stop);
+      });
+    })();
+
+    // ── COST ESTIMATOR CALCULATOR ──
+    const RATES = {
+      hardwood:      { standard: [260, 340], premium: [350, 480], luxury: [550, 850] },
+      spc:           { standard: [95, 130],  premium: [140, 195], luxury: [220, 310] },
+      epoxy:         { standard: [70, 100],  premium: [115, 170], luxury: [190, 330] },
+      marble:        { standard: [45, 65],   premium: [75, 115],  luxury: [130, 190] },
+      waterproofing: { standard: [55, 80],   premium: [90, 140],  luxury: [155, 230] },
+      termite:       { standard: [14, 20],   premium: [24, 34],   luxury: [40, 58] }
+    };
+
+    const SERVICE_NAMES = {
+      hardwood: 'Hardwood & Parquet',
+      spc: 'SPC / Vinyl Flooring',
+      epoxy: 'Seamless Epoxy',
+      marble: 'Marble Polishing',
+      waterproofing: 'Subfloor Waterproofing',
+      termite: 'Termite Defense'
+    };
+
+    function formatINR(num) {
+      return '₹' + num.toLocaleString('en-IN');
+    }
+
+    function calcEstimate() {
+      const typeEl = document.getElementById('estType');
+      const gradeEl = document.getElementById('estGrade');
+      const areaEl = document.getElementById('estArea');
+      const areaValEl = document.getElementById('estAreaVal');
+      const minEl = document.getElementById('estMin');
+      const maxEl = document.getElementById('estMax');
+      const waLink = document.getElementById('estWaLink');
+
+      if (!typeEl || !gradeEl || !areaEl) return;
+
+      const type = typeEl.value;
+      const grade = gradeEl.value;
+      const area = parseInt(areaEl.value, 10) || 500;
+
+      if (areaValEl) areaValEl.textContent = area.toLocaleString('en-IN') + ' sq ft';
+
+      const rates = (RATES[type] && RATES[type][grade]) || [100, 200];
+      const minCost = area * rates[0];
+      const maxCost = area * rates[1];
+
+      if (minEl) minEl.textContent = formatINR(minCost);
+      if (maxEl) maxEl.textContent = formatINR(maxCost);
+
+      if (waLink) {
+        const sName = SERVICE_NAMES[type] || 'Flooring';
+        const msg = encodeURIComponent(`Hello Levanto, I used your website estimator for ${sName} (${grade} grade, ${area} sq ft). Estimated range is ${formatINR(minCost)} - ${formatINR(maxCost)}. Can we discuss exact requirements?`);
+        waLink.href = `https://wa.me/919633640064?text=${msg}`;
+      }
+    }
+
+    // Initialize estimate on page load
+    document.addEventListener('DOMContentLoaded', calcEstimate);
+
+    // ── SCROLL PROGRESS BAR ──
+    const progressBar = document.getElementById('scrollProgress');
+    if (progressBar) {
+      window.addEventListener('scroll', () => {
+        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
+        progressBar.style.width = Math.min(100, Math.max(0, progress)) + '%';
+      }, { passive: true });
+    }
+
+    // ── LUXURY CUSTOM CURSOR (DESKTOP) ──
+    const cursorDot = document.getElementById('cursorDot');
+    const cursorRing = document.getElementById('cursorRing');
+    if (cursorDot && cursorRing && window.matchMedia('(pointer: fine)').matches) {
+      let mouseX = -100, mouseY = -100;
+      let ringX = -100, ringY = -100;
+
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        cursorDot.style.left = mouseX + 'px';
+        cursorDot.style.top = mouseY + 'px';
+      });
+
+      function animateRing() {
+        ringX += (mouseX - ringX) * 0.15;
+        ringY += (mouseY - ringY) * 0.15;
+        cursorRing.style.left = ringX + 'px';
+        cursorRing.style.top = ringY + 'px';
+        requestAnimationFrame(animateRing);
+      }
+      requestAnimationFrame(animateRing);
+
+      const interactives = document.querySelectorAll('a, button, input, select, textarea, .svc-card, .price-card, .faq-q');
+      interactives.forEach(el => {
+        el.addEventListener('mouseenter', () => cursorRing.classList.add('active'));
+        el.addEventListener('mouseleave', () => cursorRing.classList.remove('active'));
+      });
+    }
+
+    // ── HERO PARTICLES / FLOATING GOLD DUST CANVAS ──
+    (function initHeroParticles() {
+      const canvas = document.getElementById('heroCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      let particles = [];
+      const PARTICLE_COUNT = 55;
+
+      function resize() {
+        if (!canvas.parentElement) return;
+        width = canvas.width = canvas.parentElement.offsetWidth;
+        height = canvas.height = canvas.parentElement.offsetHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: Math.random() * 1.8 + 0.6,
+          speedY: -(Math.random() * 0.35 + 0.1),
+          speedX: (Math.random() - 0.5) * 0.2,
+          opacity: Math.random() * 0.55 + 0.2,
+          pulse: Math.random() * Math.PI,
+          pulseSpeed: Math.random() * 0.02 + 0.01
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => {
+          p.y += p.speedY;
+          p.x += p.speedX;
+          p.pulse += p.pulseSpeed;
+
+          if (p.y < -10) p.y = height + 10;
+          if (p.x < -10) p.x = width + 10;
+          if (p.x > width + 10) p.x = -10;
+
+          const currentOpacity = p.opacity * (0.6 + 0.4 * Math.sin(p.pulse));
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(229, 184, 88, ${currentOpacity})`;
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = 'rgba(200, 151, 42, 0.6)';
+          ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+      requestAnimationFrame(draw);
+    })();
+
+    // ── FAQ ACCORDION TOGGLE ──
+    document.querySelectorAll('.faq-q').forEach(q => {
+      q.addEventListener('click', () => {
+        const item = q.closest('.faq-item');
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+
+    // ── BROCHURE FORM WHATSAPP HANDLER ──
+    function handleBrochureRequest(e) {
+      e.preventDefault();
+      const phone = document.getElementById('brochurePhone').value;
+      const text = encodeURIComponent('Hello Levanto Flooring, please share your 2026 Architectural Portfolio & Brochure with me. My contact: ' + phone);
+      window.open('https://wa.me/919633640064?text=' + text, '_blank');
+    }
+
+    // ── PROACTIVE WHATSAPP CHAT POPUP ──
+    const waPopup = document.getElementById('waChatPopup');
+    const waPopupClose = document.getElementById('waPopupClose');
+    if (waPopup && waPopupClose) {
+      if (!sessionStorage.getItem('waPopupDismissed')) {
+        setTimeout(() => {
+          waPopup.classList.add('visible');
+        }, 5000);
+      }
+      waPopupClose.addEventListener('click', () => {
+        waPopup.classList.remove('visible');
+        sessionStorage.setItem('waPopupDismissed', 'true');
+      });
+    }
+
+    // ── KERALA COVERAGE MAP & REGIONAL HUB SELECTOR ──
+    (function initCoverageSelector() {
+      const hubCards = document.querySelectorAll('.hub-card');
+      const mapPins = document.querySelectorAll('.map-pin');
+      const waBtn = document.getElementById('coverageWaBtn');
+
+      const HUB_WA_MESSAGES = {
+        hq: 'Hello Levanto Flooring, I would like to schedule an on-site assessment / visit your Edavanna (Malappuram) HQ & Studio. My project location is in Malappuram / Kozhikode / North Kerala.',
+        central: 'Hello Levanto Flooring, I want to book an on-site flooring assessment with your mobile team in Central Kerala (Kochi / Thrissur / Kottayam). Please share earliest availability.',
+        south: 'Hello Levanto Flooring, I want to book an on-site flooring assessment with your mobile team in South Kerala (Trivandrum / Kollam). Please share earliest availability.',
+        southindia: 'Hello Levanto Flooring, I have an enquiry regarding a project in South India outside Kerala (Bengaluru / Chennai / Coimbatore / GCC). Please connect me with a senior project director.'
+      };
+
+      function selectHub(hubKey) {
+        hubCards.forEach(c => {
+          c.classList.toggle('active', c.getAttribute('data-hub') === hubKey);
+        });
+        mapPins.forEach(p => {
+          p.classList.toggle('active', p.getAttribute('data-hub') === hubKey);
+        });
+
+        if (waBtn && HUB_WA_MESSAGES[hubKey]) {
+          waBtn.href = 'https://wa.me/919633640064?text=' + encodeURIComponent(HUB_WA_MESSAGES[hubKey]);
+        }
+      }
+
+      hubCards.forEach(card => {
+        card.addEventListener('click', () => {
+          const hubKey = card.getAttribute('data-hub');
+          selectHub(hubKey);
+        });
+      });
+
+      mapPins.forEach(pin => {
+        pin.addEventListener('click', () => {
+          const hubKey = pin.getAttribute('data-hub');
+          selectHub(hubKey);
+        });
+      });
+    })();
+
+
+  </script>
+
+  <!-- MOTION LIBRARY: SUBTLE PULSING ANIMATION FOR FLOATING WHATSAPP BUTTON -->
+  <script type="module">
+    try {
+      const { animate } = await import("https://cdn.jsdelivr.net/npm/motion/+esm");
+      const waBtn = document.querySelector('.wa-float-btn');
+      const waRipple = document.querySelector('.wa-ripple-ring');
+      const waSvg = waBtn ? waBtn.querySelector('svg') : null;
+
+      if (waBtn) {
+        // 1. Subtle rhythmic heartbeat & breathing pulse
+        const pulseAnim = animate(
+          waBtn,
+          {
+            scale: [1, 1.075, 1, 1.035, 1],
+            boxShadow: [
+              '0 8px 25px rgba(37, 211, 102, 0.45)',
+              '0 14px 38px rgba(37, 211, 102, 0.75), 0 0 22px rgba(37, 211, 102, 0.45)',
+              '0 8px 25px rgba(37, 211, 102, 0.45)',
+              '0 11px 32px rgba(37, 211, 102, 0.6), 0 0 14px rgba(37, 211, 102, 0.3)',
+              '0 8px 25px rgba(37, 211, 102, 0.45)'
+            ]
+          },
+          {
+            duration: 3,
+            repeat: Infinity,
+            easing: 'ease-in-out'
+          }
+        );
+
+        // 2. Translucent radar ripple wave expanding outward
+        if (waRipple) {
+          animate(
+            waRipple,
+            {
+              scale: [1, 1.5],
+              opacity: [0.75, 0]
+            },
+            {
+              duration: 2.4,
+              repeat: Infinity,
+              easing: 'ease-out'
+            }
+          );
+        }
+
+        // 3. Playful micro-tilt on the WhatsApp icon to catch peripheral attention
+        if (waSvg) {
+          animate(
+            waSvg,
+            {
+              rotate: [0, -7, 7, -4, 4, 0]
+            },
+            {
+              duration: 3,
+              repeat: Infinity,
+              easing: 'ease-in-out'
+            }
+          );
+        }
+
+        // Pause animation when the user hovers to tap or click
+        waBtn.addEventListener('mouseenter', () => {
+          try { pulseAnim.pause(); } catch (e) {}
+        });
+        waBtn.addEventListener('mouseleave', () => {
+          try { pulseAnim.play(); } catch (e) {}
+        });
+      }
+    } catch (err) {
+      console.warn("Motion library load fallback:", err);
+      // Fallback: Web Animations API
+      const waBtn = document.querySelector('.wa-float-btn');
+      if (waBtn && waBtn.animate) {
+        waBtn.animate([
+          { transform: 'scale(1)', boxShadow: '0 8px 25px rgba(37, 211, 102, 0.45)' },
+          { transform: 'scale(1.075)', boxShadow: '0 14px 38px rgba(37, 211, 102, 0.75), 0 0 20px rgba(37, 211, 102, 0.45)', offset: 0.35 },
+          { transform: 'scale(1)', boxShadow: '0 8px 25px rgba(37, 211, 102, 0.45)' }
+        ], {
+          duration: 3000,
+          iterations: Infinity,
+          easing: 'ease-in-out'
+        });
+      }
+    }
   </script>
 </body>
 </html>
